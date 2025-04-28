@@ -20,13 +20,13 @@ const baseDir = process.env.NODE_ENV === 'production' ? path.join(process.cwd(),
 mongoose.connect(process.env.MONGO_ATLAS_URI, {
     serverSelectionTimeoutMS: 100000,
 })
-    .then(() => console.log('Connected to zenith db successfully'))
-    .catch(err => console.log(`ERROR In Connection to zenith db: \n ${err}`));
+    .then(() => console.log('Connected to Genesisio db successfully'))
+    .catch(err => console.log(`ERROR In Connection to Genesisio db: \n ${err}`));
 
 // CORS Configuration
 const allowedOrigins = {
     development: 'http://localhost:1234',
-    production: 'https://zenithadmin.vercel.app',
+    production: 'https://www.genesisio.net',
 };
 
 const corsOptions = {

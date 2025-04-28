@@ -59,7 +59,7 @@ const Login = () => {
               alt='brand'
               className='m-0 hover:scale-105 duration-500 delay-100 transition-all w-20 h-20 object-cover'
             />
-            <h2 className='text-3xl font-bold mb-6 text-center lg:text-start'>Zenith Admin</h2>
+            <h2 className='text-3xl font-bold mb-6 text-center lg:text-start'>Genesisio Admin</h2>
           </Link>
           <p className='text-text-light mb-6 text-center lg:text-start'>
             Please sign-in to your account.

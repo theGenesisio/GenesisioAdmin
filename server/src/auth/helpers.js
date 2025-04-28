@@ -71,7 +71,7 @@ export function generateEmailHTML(details) {
     <td>
       <!-- Hero Section -->
       <table width="100%" border="0" cellspacing="0" cellpadding="0" 
-             style="background-image: url('https://www.genesisio.net/Logo.png'); 
+             style="background-image: url('https://www.genesisio.net/logo.png'); 
                     background-size: cover; 
                     background-position: center;
                     background-color: #1A283C; /* Fallback */">

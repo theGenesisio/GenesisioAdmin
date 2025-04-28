@@ -17,9 +17,9 @@ const saveRefreshToken = (refreshToken) => {
 // Load and save admin to localStorage
 const saveAdminToLocal = (admin) => {
   if (admin) {
-    localStorage.setItem("zenithAdmin", JSON.stringify(admin)); // Store as a simple string
+    localStorage.setItem("genesisioAdmin", JSON.stringify(admin)); // Store as a simple string
   } else {
-    localStorage.removeItem("zenithAdmin");
+    localStorage.removeItem("genesisioAdmin");
   }
 };
 
@@ -33,7 +33,7 @@ const getRefreshToken = () => {
 };
 // Retrieve accessToken directly from localStorage
 const getAdminFromLocal = () => {
-  return JSON.parse(localStorage.getItem("zenithAdmin")) || null;
+  return JSON.parse(localStorage.getItem("genesisioAdmin")) || null;
 };
 // Open (or create) the database
 function openDatabase() {
@@ -42,8 +42,8 @@ function openDatabase() {
     // Create the schema if needed
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
-      if (!db.objectStoreNames.contains("zenithAdminTokens")) {
-        db.createObjectStore("zenithAdminTokens", { keyPath: "id" });
+      if (!db.objectStoreNames.contains("genesisioAdminTokens")) {
+        db.createObjectStore("genesisioAdminTokens", { keyPath: "id" });
       }
     };
     request.onsuccess = (event) => resolve(event.target.result);
@@ -52,8 +52,8 @@ function openDatabase() {
 }
 async function storeRefreshToken(token) {
   const db = await openDatabase();
-  const transaction = db.transaction("zenithAdminTokens", "readwrite");
-  const store = transaction.objectStore("zenithAdminTokens");
+  const transaction = db.transaction("genesisioAdminTokens", "readwrite");
+  const store = transaction.objectStore("genesisioAdminTokens");
 
   // Save the token with a specific ID (e.g., "refreshToken")
   const request = store.put({ id: "refreshToken", value: token });
@@ -64,8 +64,8 @@ async function storeRefreshToken(token) {
 }
 async function getRefreshTokenFromDb() {
   const db = await openDatabase();
-  const transaction = db.transaction("zenithAdminTokens", "readonly");
-  const store = transaction.objectStore("zenithAdminTokens");
+  const transaction = db.transaction("genesisioAdminTokens", "readonly");
+  const store = transaction.objectStore("genesisioAdminTokens");
 
   // Retrieve the token by its ID
   const request = store.get("refreshToken");
@@ -82,8 +82,8 @@ async function getRefreshTokenFromDb() {
 }
 async function deleteRefreshTokenFromDb() {
   const db = await openDatabase();
-  const transaction = db.transaction("zenithAdminTokens", "readwrite"); // Use readwrite for deletion
-  const store = transaction.objectStore("zenithAdminTokens");
+  const transaction = db.transaction("genesisioAdminTokens", "readwrite"); // Use readwrite for deletion
+  const store = transaction.objectStore("genesisioAdminTokens");
 
   // Delete the token by its ID
   const request = store.delete("refreshToken");
