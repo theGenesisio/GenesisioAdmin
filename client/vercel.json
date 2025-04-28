@@ -1,0 +1,20 @@
+{
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "/index.html"
+        }
+    ],
+    "redirects": [
+        {
+            "source": "/",
+            "destination": "/login",
+            "permanent": false
+        }
+    ],
+    "build": {
+        "env": {
+            "NODE_ENV": "production"
+        }
+    }
+}

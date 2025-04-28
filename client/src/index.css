@@ -1,0 +1,269 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html
+{
+  overflow-x: hidden;
+}
+
+body
+{
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%23424242' fill-opacity='0.11' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+body
+{
+  @apply bg-primary-dark text-text-light;
+}
+
+input[type="radio"]
+{
+  @apply bg-transparent accent-accent;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button
+{
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"]
+{
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.sidebar
+{
+  @apply lg:w-72 lg:fixed lg:inset-y-0;
+}
+
+.main
+{
+  @apply flex-1 lg:ml-72 mt-5 py-5 lg:px-5 me-2 lg:mx-0 -ms-6;
+}
+
+.dashboard-box
+{
+  @apply bg-primary-default rounded-md p-4 shadow-md min-h-32;
+}
+
+.profile-box
+{
+  @apply bg-primary-default rounded-md p-6 shadow-md min-h-fit;
+}
+
+.deposit-box
+{
+  @apply bg-primary-default rounded-md p-2 shadow-md min-h-60 relative;
+}
+
+/* Basic Box */
+.basic-box
+{
+  @apply bg-white rounded-lg p-4 m-2 shadow-md text-primary-dark;
+}
+
+/* Tertiary Box */
+.tertiary-box
+{
+  @apply border border-gray-900 rounded-lg p-4 m-2 shadow-2xl bg-primary-dark text-white;
+}
+
+/* Secondary Box */
+.secondary-box
+{
+  @apply border border-gray-700 rounded-lg p-4 m-2 shadow-xl bg-primary-default text-white;
+}
+
+/* Primary Box */
+.primary-box
+{
+  @apply border border-gray-700 rounded-lg p-4 m-2 shadow-lg bg-primary-light text-white;
+}
+
+/* Warning Box */
+.warning-box
+{
+  @apply border border-warning-dark rounded-lg p-4 m-2 shadow-lg bg-warning-light text-warning-dark;
+}
+
+/* Error Box */
+.error-box
+{
+  @apply border border-error-dark rounded-lg p-4 m-2 shadow-lg bg-error-light text-error-dark;
+}
+
+/* Success Box */
+.success-box
+{
+  @apply border border-success-dark rounded-lg p-4 m-2 shadow-lg bg-success-light text-success-dark;
+}
+
+/* Accent Box */
+.accent-box-light
+{
+  @apply border border-yellow-800 text-yellow-800 rounded-lg p-4 m-2 shadow-lg bg-yellow-100;
+}
+
+/* Accent Box */
+.accent-box
+{
+  @apply border border-accent rounded-lg p-4 m-2 shadow-xl bg-accent text-white;
+}
+
+/* Primary Button Styles */
+.primary-btn
+{
+  @apply bg-primary-default text-white py-2 px-2 rounded transition-colors duration-500 ease-in-out uppercase font-semibold disabled:opacity-50 disabled:cursor-none;
+}
+
+.primary-btn:hover
+{
+  @apply bg-primary-dark scale-105;
+}
+
+.primary-btn:focus
+{
+  @apply ring-2 ring-accent ring-opacity-50 outline-none;
+}
+
+/* Warning Button Styles */
+.warning-btn
+{
+  @apply bg-warning-dark text-black py-2 px-2 rounded transition-colors duration-500 ease-in-out uppercase disabled:opacity-50 disabled:cursor-none;
+}
+
+.warning-btn:hover
+{
+  @apply bg-warning-light;
+}
+
+.warning-btn:focus
+{
+  @apply ring-2 ring-warning-dark ring-opacity-50 outline-none;
+}
+
+/* Danger Button Styles */
+.danger-btn
+{
+  @apply bg-error-dark text-white py-2 px-2 rounded transition-colors duration-500 ease-in-out uppercase disabled:opacity-50 disabled:cursor-none;
+}
+
+.danger-btn:hover
+{
+  @apply bg-error-light text-black;
+}
+
+.danger-btn:focus
+{
+  @apply ring-2 ring-error-dark ring-opacity-50 outline-none;
+}
+
+.accent-btn
+{
+  @apply bg-accent text-white py-2 px-2 rounded font-semibold transition-colors duration-500 ease-in-out uppercase hover:bg-yellow-800 disabled:opacity-50 disabled:cursor-none;
+}
+
+.accent-btn:focus
+{
+  @apply ring-4 ring-accent ring-opacity-50 outline-none bg-yellow-800;
+}
+
+.form-input
+{
+  @apply placeholder-primary-light focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent px-4 py-2 bg-primary-default rounded-md border border-primary-mild text-white;
+}
+
+.form-input-focus
+{
+  @apply focus:ring-primary-default focus:border-primary-default;
+}
+
+.form-input-error
+{
+  @apply border-error-dark text-error-dark focus:ring-error-dark focus:border-error-dark;
+}
+
+.heading-1
+{
+  @apply text-4xl font-bold text-white mb-4;
+}
+
+.heading-2
+{
+  @apply text-3xl font-semibold text-white mb-3;
+}
+
+.heading-3
+{
+  @apply text-2xl font-semibold text-white mb-2;
+}
+
+.nav-link
+{
+  @apply text-sm text-accent hover:underline p-2 font-semibold italic hover:text-yellow-800 transition-all duration-500 delay-100 ease-in-out;
+}
+
+.paragraph
+{
+  @apply text-text-light font-normal;
+}
+
+.highlight
+{
+  @apply text-white font-semibold text-lg;
+}
+
+.toast
+{
+  @apply fixed z-[1000] items-end gap-1 bottom-1 right-1 max-w-96;
+}
+
+.check-box
+{
+  @apply mr-2 bg-primary-dark border-primary-default rounded accent-accent;
+}
+
+@layer base
+{
+
+  /* Define global scrollbar styles */
+  *
+  {
+    scrollbar-width: thin;
+    /* For Firefox */
+    scrollbar-color: theme("colors.accent") transparent;
+    /* For Firefox */
+  }
+
+  *::-webkit-scrollbar
+  {
+    width: 4px;
+    /* Thin scrollbar width */
+    height: 4px;
+    /* Thin scrollbar height for horizontal scrollbars */
+  }
+
+  *::-webkit-scrollbar-thumb
+  {
+    background-color: theme("colors.accent");
+    /* Use accent color */
+    border-radius: 9999px;
+    /* Round corners */
+  }
+
+  *::-webkit-scrollbar-track
+  {
+    background: transparent;
+    /* Track background */
+  }
+
+  #google_translate_element select
+  {
+    background-color: #262626;
+    color: #ffffff;
+  }
+}

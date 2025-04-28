@@ -1,0 +1,21 @@
+{
+    "name": "Admin | Zenithearn",
+    "short_name": "Zenithearn",
+    "description": "A Smarter Approach to Trading & Investing",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#262626",
+    "theme_color": "#262626",
+    "icons": [
+        {
+            "src": "/logo.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/logo.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
