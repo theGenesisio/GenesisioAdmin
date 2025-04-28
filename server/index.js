@@ -26,7 +26,7 @@ mongoose.connect(process.env.MONGO_ATLAS_URI, {
 // CORS Configuration
 const allowedOrigins = {
     development: 'http://localhost:1234',
-    production: 'https://www.genesisio.net',
+    production: 'https://admin-genesisio.vercel.app',
 };
 
 const corsOptions = {
