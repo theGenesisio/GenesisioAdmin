@@ -94,7 +94,9 @@ function SidebarContent() {
   };
   const navigate = useNavigate();
   return (
-    <Card shadow={false} className='h-[calc(100vh-2rem)] w-full p-4 bg-inherit'>
+    <Card
+      shadow={false}
+      className='h-[calc(100vh-2rem)] w-full p-4 bg-inherit overflow-y-auto overflow-x-hidden'>
       <Link
         to='/app/dashboard'
         className='mb-2 flex items-center p-4 text-text-light hover:scale-105 duration-500 delay-100 transition-all'>
@@ -256,7 +258,7 @@ function SidebarContent() {
           <ListItemPrefix>
             <span className='h-5 w-5 scale-125'>{plansIcon}</span>
           </ListItemPrefix>
-          Plans
+          Investment
         </ListItem>
         <ListItem onClick={() => navigate("./copy-trade")}>
           <ListItemPrefix>

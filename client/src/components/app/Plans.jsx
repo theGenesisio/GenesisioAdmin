@@ -218,7 +218,7 @@ const Plans = () => {
         className='profile-box flex flex-col space-y-4 col-span-1 md:col-span-2'
         variant='gradient'
         color='gray'>
-        <h2 className='text-lg font-semibold mb-2'>Create Plan</h2>
+        <h2 className='text-lg font-semibold mb-2'>Create Investments</h2>
         <form onSubmit={handlePlans} className='flex flex-col space-y-2'>
           <div>
             <label className='block text-sm font-semibold text-text-light mb-1' htmlFor='name'>
@@ -299,7 +299,7 @@ const Plans = () => {
         variant='gradient'
         color='gray'>
         <div className='p-4 flex flex-col md:flex-row justify-between'>
-          <h2 className='text-lg font-semibold'>Available Plans</h2>
+          <h2 className='text-lg font-semibold'>Available Investments</h2>
           <div className='relative w-full max-w-sm md:ml-4 mt-2 md:mt-0'>
             <input
               type='text'
@@ -351,7 +351,7 @@ const Plans = () => {
                 {paginatedPlans.length === 0 && (
                   <tr>
                     <td colSpan='6' className='p-4 text-center'>
-                      No plans found.
+                      No Investments found.
                     </td>
                   </tr>
                 )}
