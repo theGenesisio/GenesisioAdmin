@@ -281,7 +281,8 @@ const InvestmentTable = () => {
                 <th className='p-4 text-nowrap'>Min ($)</th>
                 <th className='p-4 text-nowrap'>Max ($)</th>
                 <th className='p-4 text-nowrap'>ROI Percentage (%)</th>
-                <th className='p-4'>Duration</th>
+                <th className='p-4'>Frequency (days)</th>
+                <th className='p-4'>Duration (days)</th>
                 <th className='p-4'>Start date</th>
                 <th className='p-4'>Expiry date</th>
                 <th className='p-4'>Last Updated</th>
@@ -297,6 +298,7 @@ const InvestmentTable = () => {
                   <td className='p-4'>{parseFloat(investment.plan.limits.min).toLocaleString()}</td>
                   <td className='p-4'>{parseFloat(investment.plan.limits.max).toLocaleString()}</td>
                   <td className='p-4'>{investment.plan.ROIPercentage}</td>
+                  <td className='p-4'>{investment.frequency}</td>
                   <td className='p-4'>{investment.plan.duration}</td>
                   <td className='p-4 min-w-[16rem]'>
                     {formatToNewYorkTime(investment.startDate) || "_"}
