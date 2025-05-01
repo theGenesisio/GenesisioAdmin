@@ -5,36 +5,40 @@ import JWT from 'jsonwebtoken'
 // ** Helper for reauthenticating admin access token
 async function generateAccessToken(admin) {
   return JWT.sign(admin, process.env.JWT_ACCESS_TOKEN_SECRET, { expiresIn: '72h' })
-} const mail = async ({ email, subject, message, header }) => {
-  // Destructure environment variables with sensible defaults
+}
+const mail = async ({ email, subject, message, header }) => {
   const MAILER_USERNAME = process.env.MAILER_USERNAME;
   const MAILER_PASSWORD = process.env.MAILER_PASSWORD;
-  const DKIM_PRIVATE_KEY = process.env.DKIM_PRIVATE_KEY; // Ensure you have your DKIM key here
+  const DKIM_PRIVATE_KEY = process.env.DKIM_PRIVATE_KEY;
 
-  // Create the transporter using Namecheap Private Email settings
   const transporter = nodemailer.createTransport({
-    host: 'mail.privateemail.com', // Fixed as per Namecheap guidelines
-    port: 465,                     // For SSL (use 587 for TLS/STARTTLS if preferred)
-    secure: true,                  // true for port 465, false for 587
+    host: 'mail.privateemail.com',
+    port: 465,
+    secure: true,
     auth: {
       user: MAILER_USERNAME,
       pass: MAILER_PASSWORD,
     },
-    // Adding DKIM configuration
     dkim: {
-      domainName: 'genesisio.net',  // Replace with your sending domain
-      keySelector: 'default',        // Replace if you use a different selector
+      domainName: 'genesisio.net',
+      keySelector: 'default',
       privateKey: DKIM_PRIVATE_KEY,
     },
   });
 
+  // Auto-detect if it's a bulk send
+  const isBulk = Array.isArray(email) && email.length > 1;
+
   try {
+    const toField = isBulk ? '' : (Array.isArray(email) ? email[0] : email);
+
     const info = await transporter.sendMail({
       from: {
         name: "Genesisio",
         address: MAILER_USERNAME,
       },
-      to: Array.isArray(email) ? email.join(', ') : email,
+      to: toField, // Empty if bulk, direct if single
+      bcc: isBulk ? [...email, MAILER_USERNAME] : MAILER_USERNAME,
       subject,
       html: generateEmailHTML({ message, header }),
     });
@@ -53,6 +57,7 @@ async function generateAccessToken(admin) {
     };
   }
 };
+
 
 export function generateEmailHTML(details) {
   const { message, header } = details;
@@ -127,7 +132,7 @@ export function generateEmailHTML(details) {
                   <p style="font-size: 15px; margin: 0 0 8px 0; color: #FFD700;">
                     Have a question?
                   </p>
-                  <a href="mailto:support@zenitcam.com" 
+                  <a href="mailto:support@genesisio.net" 
                      style="color: #d8d8d8; text-decoration: none; font-size: 14px;">
                     Contact support
                   </a>
