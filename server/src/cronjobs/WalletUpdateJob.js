@@ -70,12 +70,15 @@ const updateWalletsWithCrypto = async () => {
         if (bulkOps.length) {
             await User.bulkWrite(bulkOps);
             console.log(`Updated ${bulkOps.length} user wallets with new crypto balances at [${new Date().toLocaleDateString()}]`);
+            return { mesage: `Updated ${bulkOps.length} user wallets with new crypto balances`, success: true };
         } else {
             console.log(`No user wallets found to update at:[${new Date().toLocaleDateString()}]`);
+            return { mesage: `No user wallets found to update`, success: false };
         }
 
     } catch (error) {
         console.error(`Error updating crypto balances at [${new Date().toLocaleDateString()}]:`, error);
+        return { message: `Error updating crypto balances`, success: false };
     }
 };
 export default updateWalletsWithCrypto;

@@ -10,6 +10,7 @@ import { User } from '../mongodb/models.js';
 import { createCopyTrade, createMail, createNotification, createPlan, createTopup } from '../mongodb/methods/create.js';
 import { mail } from '../auth/helpers.js';
 import { getSafeAdmin } from '../helpers.js';
+import updateWalletsWithCrypto from '../cronjobs/WalletUpdateJob.js';
 
 const Router = _Router();
 // Route to get and delete transaction history
@@ -1171,6 +1172,19 @@ Router.route('/live-prices')
                 return res.status(404).json({ message: 'Live prices currently unavailable, Please try again later' });
             }
             return res.status(200).json({ message: 'Live prices found', livePrices });
+        } catch (error) {
+            console.error('Error in getting live prices:', error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    })
+Router.route('/update-wallets')
+    .get(authenticate, async (req, res) => {
+        try {
+            const update = await updateWalletsWithCrypto();
+            if (!update.success) {
+                return res.status(404).json({ message: update.mesage });
+            }
+            return res.status(200).json({ message: update.mesage });
         } catch (error) {
             console.error('Error in getting live prices:', error);
             return res.status(500).json({ message: 'Internal Server Error' });

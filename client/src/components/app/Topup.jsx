@@ -73,6 +73,7 @@ const Topup = () => {
   const [totalItems, setTotalItems] = useState(0);
   const [liveEquivalent, setLiveEquivalent] = useState(1);
   const [equivalentLoading, setEquivalentLoading] = useState(false);
+  const [walletLoading, setWalletLoading] = useState(false);
   useEffect(() => {
     const fetchLiveEquivalent = async () => {
       setEquivalentLoading(true);
@@ -275,13 +276,47 @@ const Topup = () => {
       setLoading(false);
     }
   };
+  // Function to manually update wallets
+  const updateWallets = async () => {
+    try {
+      setWalletLoading(true);
+      const response = await FetchWithAuth(
+        `/update-wallets`,
+        {
+          method: "GET",
+          credentials: "include",
+        },
+        "Failed to update wallets"
+      );
+      if (response.failed) {
+        addNotification(response.message, "error");
+      } else {
+        const { message } = response;
+        addNotification(message, "success");
+      }
+    } catch (err) {
+      addNotification("An error occurred while updating wallets", "error");
+      console.error("Fetch error:", err);
+    } finally {
+      setWalletLoading(false);
+    }
+  };
   return (
     <main className='grid md:grid-cols-5 grid-cols-1 gap-4'>
       <Card
         className='profile-box flex flex-col space-y-4 col-span-1 md:col-span-2'
         variant='gradient'
         color='gray'>
-        <h2 className='text-lg font-semibold mb-2'>Top up</h2>
+        <div className='flex flex-row justify-between'>
+          <h2 className='text-lg font-semibold mb-2'>Top up</h2>
+          <button onClick={() => updateWallets()} className='primary-btn' disabled={walletLoading}>
+            {walletLoading ? "Updating..." : "Update wallets"}
+          </button>
+        </div>
+        <p className='text-xs text-text-light mb-2'>
+          Wallet updates my take up to 10 mins to complete across all accounts, avoid repeatedly
+          clicking
+        </p>
         <form className='flex flex-col space-y-2' onSubmit={handleSubmit}>
           <select
             className='form-input w-full'
