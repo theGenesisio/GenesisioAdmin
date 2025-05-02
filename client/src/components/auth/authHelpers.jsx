@@ -38,7 +38,7 @@ const getAdminFromLocal = () => {
 // Open (or create) the database
 function openDatabase() {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open("adminDb", 1);
+    const request = indexedDB.open("GenesisioAdminDb", 1);
     // Create the schema if needed
     request.onupgradeneeded = (event) => {
       const db = event.target.result;

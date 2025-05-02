@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { refreshTokenSchema, adminSchema, billingSchema, userSchema, KYCSchema, depositSchema, withdrawalRequestSchema, whatsappSchema, notificationSchema, plansSchema, investmentSchema, topupSchema, livetradeSchema, MailLogSchema, copytradeSchema, traderSchema } from './schema.js';
+import { refreshTokenSchema, adminSchema, billingSchema, userSchema, KYCSchema, depositSchema, withdrawalRequestSchema, whatsappSchema, notificationSchema, plansSchema, investmentSchema, topupSchema, livetradeSchema, MailLogSchema, copytradeSchema, traderSchema, livePriceSchema } from './schema.js';
 const { model } = mongoose
 const AdminRefreshToken = model('AdminRefreshToken', refreshTokenSchema)
 const RefreshToken = model('RefreshToken', refreshTokenSchema)
@@ -18,6 +18,7 @@ const LiveTrade = model('LiveTrade', livetradeSchema);
 const Trader = model('Trader', traderSchema)
 const CopyTrade = model('CopyTrade', copytradeSchema)
 const Mail = model('Mail', MailLogSchema);
-const models = [RefreshToken, User, KYC, Billing, Deposit, WithdrawalRequest, AdminRefreshToken, Admin, Billing, Whatsapp, Notification, Plan, Investment, Topup, LiveTrade, Mail, Trader, CopyTrade]
+const LivePrice = model('LivePrice', livePriceSchema);
+const models = [RefreshToken, User, KYC, Billing, Deposit, WithdrawalRequest, AdminRefreshToken, Admin, Billing, Whatsapp, Notification, Plan, Investment, Topup, LiveTrade, Mail, Trader, CopyTrade, LivePrice]
 import './methods/schemaHelpers.js'
-export { models, AdminRefreshToken, Admin, Billing, RefreshToken, User, KYC, Deposit, WithdrawalRequest, Whatsapp, Notification, Plan, Investment, Topup, LiveTrade, Mail, Trader, CopyTrade }
+export { models, AdminRefreshToken, Admin, Billing, RefreshToken, User, KYC, Deposit, WithdrawalRequest, Whatsapp, Notification, Plan, Investment, Topup, LiveTrade, Mail, Trader, CopyTrade, LivePrice }

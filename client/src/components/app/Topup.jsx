@@ -71,6 +71,55 @@ const Topup = () => {
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [paginatedRecords, setPaginatedRecords] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
+  const [liveEquivalent, setLiveEquivalent] = useState(1);
+  const [equivalentLoading, setEquivalentLoading] = useState(false);
+  useEffect(() => {
+    const fetchLiveEquivalent = async () => {
+      setEquivalentLoading(true);
+      try {
+        const response = await FetchWithAuth(
+          "/live-prices",
+          {
+            method: "GET",
+            credentials: "include",
+          },
+          "Failed to fetch live equivalent"
+        );
+
+        if (response.failed) {
+          addNotification(response.message, "error");
+          setLiveEquivalent(1);
+          return;
+        }
+
+        const { livePrices, message } = response;
+
+        const slug = affectedBalance.split(".").pop().toLowerCase();
+        const validSlugs = ["bitcoin", "ethereum", "solana", "tether", "xrp"];
+
+        if (!validSlugs.includes(slug)) {
+          setLiveEquivalent(1);
+          return;
+        }
+
+        const match = livePrices.find((item) => item.slug.toLowerCase() === slug);
+        const price = match?.quote?.USD?.price || 1;
+
+        setLiveEquivalent(price);
+        addNotification(message, "success");
+      } catch (err) {
+        console.error("Error fetching live equivalent:", err);
+        addNotification("An error occurred while fetching live equivalent", "error");
+        setLiveEquivalent(1);
+      } finally {
+        setEquivalentLoading(false);
+      }
+    };
+
+    fetchLiveEquivalent();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [affectedBalance]);
+
   // Update items per page based on window size
   const updateItemsPerPage = () => {
     const width = window.innerWidth;
@@ -268,6 +317,14 @@ const Topup = () => {
               required
             />
           </div>
+          <p
+            className={`text-xs ${
+              amount < 0 ? "text-error-dark" : amount > 0 ? "text-success-dark" : "text-text-light"
+            }`}>
+            {equivalentLoading
+              ? "Loading equivalent..."
+              : `=$${parseFloat(amount * liveEquivalent).toFixed(6)}`}
+          </p>
           <div>
             <label
               className='block text-sm font-semibold text-text-light mb-1'
@@ -283,13 +340,23 @@ const Topup = () => {
               <option value='' disabled>
                 Select balance to affect
               </option>
-              {["balance", "totalDeposit", "totalBonus", "profits", "withdrawn", "referral"].map(
-                (option) => (
-                  <option key={option} value={option}>
-                    {option.charAt(0).toUpperCase() + option.slice(1)}
-                  </option>
-                )
-              )}
+              {[
+                "balance",
+                "totalDeposit",
+                "totalBonus",
+                "profits",
+                "withdrawn",
+                "referral",
+                "bitcoin",
+                "ethereum",
+                "solana",
+                "tether",
+                "xrp",
+              ].map((option) => (
+                <option key={option} value={option}>
+                  {option.charAt(0).toUpperCase() + option.slice(1)}
+                </option>
+              ))}
             </select>
           </div>
           <div>
@@ -341,7 +408,8 @@ const Topup = () => {
               <thead className='bg-primary-mild'>
                 <tr>
                   <th className='p-4'>Client</th>
-                  <th className='p-4'>Amount($)</th>
+                  <th className='p-4'>Amount</th>
+                  <th className='p-4 flex-wrap'>Affected Balance</th>
                   <th className='p-4 flex-wrap'>Description</th>
                   <th className='p-4'>Date</th>
                   <th className='p-4'>Actions</th>
@@ -359,7 +427,14 @@ const Topup = () => {
                           ? "text-success-dark"
                           : "text-text-light"
                       }`}>
-                      {`$${parseFloat(record.amount).toLocaleString()}`}
+                      {`${
+                        record.affectedBalance?.includes("crypto.cryptoAssets") ? "" : "$"
+                      }${parseFloat(record.amount).toLocaleString()}`}
+                    </td>
+                    <td className='p-4 flex-wrap'>
+                      {record.affectedBalance?.includes("crypto.cryptoAssets.")
+                        ? record.affectedBalance.split(".").pop()
+                        : record.affectedBalance}
                     </td>
                     <td className='p-4 flex-wrap'>{record.description}</td>
                     <td className='p-4'>{formatToNewYorkTime(record.createdAt)}</td>

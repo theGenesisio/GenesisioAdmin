@@ -175,7 +175,7 @@ const createTopup = async (details = {}) => {
         console.warn(`Missing ${missingFields.length} required fields:\n${missingFields.join(', ')}`);
         return false;
     }
-    const allowedBalances = ['balance', 'totalDeposit', 'totalBonus', 'profits', 'withdrawn', 'referral'];
+    const allowedBalances = ['balance', 'totalDeposit', 'totalBonus', 'profits', 'withdrawn', 'referral', "crypto.cryptoAssets.bitcoin", "crypto.cryptoAssets.ethereum", "crypto.cryptoAssets.solana", "crypto.cryptoAssets.tether", "crypto.cryptoAssets.xrp",];
 
     if (!allowedBalances.includes(affectedBalance)) {
         console.warn("Invalid affected balance type.");
@@ -197,14 +197,19 @@ const createTopup = async (details = {}) => {
             throw new Error('Topup was not saved.');
         }
         const newTopup = parseFloat(user.wallet.topup) + parseFloat(amount);
-        const newAffectedBalance = parseFloat(user.wallet[affectedBalance]) + parseFloat(amount);
+
+        const currentBalance = affectedBalance
+            .split('.')
+            .reduce((acc, key) => acc?.[key], user.wallet) ?? 0; // Use optional chaining to safely access nested properties
+
+        const newAffectedBalance = parseFloat(currentBalance) + parseFloat(amount);
 
         const updatedUser = await User.findByIdAndUpdate(
             userDetails.userId,
             {
                 $set: {
                     'wallet.topup': newTopup,
-                    [`wallet.${affectedBalance}`]: newAffectedBalance, // Dynamic key syntax
+                    [`wallet.${affectedBalance}`]: newAffectedBalance,
                 }
             },
             { new: true, runValidators: true }

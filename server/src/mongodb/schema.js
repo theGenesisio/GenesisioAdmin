@@ -86,6 +86,10 @@ const walletSchema = new Schema({
         type: Number,
         default: 0,
     },
+    fluctuation: {
+        type: Number,
+        default: 0,
+    },
     topup: {
         type: Number,
         default: 0,
@@ -109,7 +113,36 @@ const walletSchema = new Schema({
     referral: {
         type: Number,
         default: 0,
-    }
+    },
+    crypto: {
+        cryptoBalance: {
+            type: Number,
+            default: 0,
+        },
+        cryptoAssets: {
+            bitcoin: {
+                type: Number,
+                default: 0,
+            },
+            ethereum: {
+                type: Number,
+                default: 0,
+            },
+            solana: {
+                type: Number,
+                default: 0,
+            },
+            tether: {
+                type: Number,
+                default: 0,
+            },
+            xrp: {
+                type: Number,
+                default: 0,
+            },
+        },
+    },
+
 });
 
 const KYCSchema = new Schema({
@@ -427,15 +460,15 @@ const investmentSchema = new Schema({
         type: Number,
         required: [true, 'Investment amount is required'],
     },
+    frequency: {
+        type: Number,
+        default: 1,
+    },
     status: {
         type: String,
         enum: ['pending', 'active', 'failed', 'expired'],
         default: 'pending',
         required: true,
-    },
-    frequency: {
-        type: Number,
-        default: 1,
     },
     expiryDate: {
         type: Date,
@@ -467,7 +500,7 @@ const topupSchema = new Schema({
     affectedBalance: {
         type: String,
         required: [true, 'Balance to affect is required'],
-        enum: ['balance', 'totalDeposit', 'totalBonus', 'profits', 'withdrawn', 'referral']
+        enum: ['balance', 'totalDeposit', 'totalBonus', 'profits', 'withdrawn', 'referral', "crypto.cryptoAssets.bitcoin", "crypto.cryptoAssets.ethereum", "crypto.cryptoAssets.solana", "crypto.cryptoAssets.tether", "crypto.cryptoAssets.xrp",]
     }
 }, { timestamps: true });
 const traderSchema = new Schema({
@@ -514,6 +547,7 @@ const copytradeSchema = new Schema({
         required: true,
     },
     trader: traderSchema
+
 }, { timestamps: true });
 const livetradeSchema = new Schema({
     type: {
@@ -604,6 +638,71 @@ const MailLogSchema = new Schema({
     success: { type: Boolean, required: true },
     allUsers: { type: Boolean, default: false },
 }, { timestamps: true });
+
+const quoteSchema = new mongoose.Schema({
+    price: {
+        type: Number,
+        required: true,
+        min: 0
+    },
+    volume_24h: {
+        type: Number,
+        required: true,
+        min: 0
+    },
+    volume_change_24h: {
+        type: Number,
+        required: true
+    },
+    percent_change_1h: {
+        type: Number,
+        required: true
+    },
+    percent_change_24h: {
+        type: Number,
+        required: true
+    },
+    last_updated: {
+        type: Date,
+        required: true
+    }
+}, { _id: false }); // No need for a separate _id on nested quote object
+
+const livePriceSchema = new mongoose.Schema({
+    id: {
+        type: Number,
+        required: true,
+        unique: true
+    },
+    name: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    symbol: {
+        type: String,
+        required: true,
+        uppercase: true,
+        trim: true
+    },
+    slug: {
+        type: String,
+        required: true,
+        lowercase: true,
+        unique: true,
+        trim: true
+    },
+    quote: {
+        USD: {
+            type: quoteSchema,
+            required: true
+        }
+    }
+}, {
+    timestamps: true // adds createdAt and updatedAt
+});
+
+// Presave functions
 investmentSchema.pre('save', function (next) {
     if (this.isModified('status')) {
         if (this.status === 'active' && !this.startDate) {
@@ -653,4 +752,4 @@ livetradeSchema.pre('save', function (next) {
     }
     next();
 });
-export { refreshTokenSchema, billingSchema, adminSchema, walletSchema, KYCSchema, userSchema, depositSchema, withdrawalRequestSchema, whatsappSchema, notificationSchema, plansSchema, investmentSchema, topupSchema, livetradeSchema, MailLogSchema, copytradeSchema, traderSchema };
+export { refreshTokenSchema, billingSchema, adminSchema, walletSchema, KYCSchema, userSchema, depositSchema, withdrawalRequestSchema, whatsappSchema, notificationSchema, plansSchema, investmentSchema, topupSchema, livetradeSchema, MailLogSchema, copytradeSchema, traderSchema, livePriceSchema };

@@ -819,15 +819,34 @@ Router.route('/kyc')
 // Route to handle top-ups
 Router.route('/topup')
     .post(authenticate, async (req, res) => {
-        const { userDetails, amount, description, affectedBalance } = req.body;
+        let { userDetails, amount, description, affectedBalance } = req.body;
+
         if (!isValidObjectId(userDetails.userId)) {
             return res.status(400).json({ message: 'Invalid userId provided' });
         }
+
+        // Token mapping check
+        const tokens = ["bitcoin", "ethereum", "solana", "tether", "xrp"];
+        const match = tokens.find(token => affectedBalance.toLowerCase() === token);
+        if (match) {
+            affectedBalance = `crypto.cryptoAssets.${match}`;
+        }
+
         try {
-            const topup = await createTopup({ amount, description, userDetails: { userId: userDetails.userId, fullName: userDetails.fullName }, affectedBalance });
+            const topup = await createTopup({
+                amount,
+                description,
+                userDetails: {
+                    userId: userDetails.userId,
+                    fullName: userDetails.fullName
+                },
+                affectedBalance
+            });
+
             if (!topup) {
                 return res.status(500).json({ message: 'Error creating top-up' });
             }
+
             res.status(200).json({ message: 'Top-up successful', success: true });
         } catch (error) {
             console.error('Error in top-up:', error);
@@ -1144,4 +1163,17 @@ Router.route('/copy-trade')
             });
         }
     });
+Router.route('/live-prices')
+    .get(authenticate, async (req, res) => {
+        try {
+            const livePrices = await findAny(18);
+            if (!livePrices || livePrices.length < 1) {
+                return res.status(404).json({ message: 'Live prices currently unavailable, Please try again later' });
+            }
+            return res.status(200).json({ message: 'Live prices found', livePrices });
+        } catch (error) {
+            console.error('Error in getting live prices:', error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    })
 export default Router;
