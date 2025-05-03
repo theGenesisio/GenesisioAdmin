@@ -1,84 +1,98 @@
 import { User } from '../mongodb/models.js';
 import { findAny } from '../mongodb/methods/read.js';
+
 const updateWalletsWithCrypto = async () => {
     try {
         // 1. Get current prices from DB
-        const currentPrices = await findAny(18); // Assuming 18 is the index for LivePrice model
+        const currentPrices = await findAny(18); // Assuming 18 is LivePrice model
         if (!currentPrices || currentPrices.length === 0) {
-            console.error(`No prices found in the database at [${new Date().toLocaleDateString()}]`);
+            console.error(`No prices found in DB at [${new Date().toLocaleDateString()}]`);
             return;
         }
-        // Get objects that match ids [1,1027,5426,825,52]
-        const prices = {
-            btc: currentPrices.find(price => price.id === 1)?.quote.USD.price || 0,
-            eth: currentPrices.find(price => price.id === 1027)?.quote.USD.price || 0,
-            solana: currentPrices.find(price => price.id === 5426)?.quote.USD.price || 0,
-            tether: currentPrices.find(price => price.id === 825)?.quote.USD.price || 0,
-            xrp: currentPrices.find(price => price.id === 52)?.quote.USD.price || 0,
-        };
-        // 2. Get all user 
-        const users = await findAny(1); // Assuming 0 is the index for User model
 
+        // 2. Extract prices
+        const prices = {
+            btc: currentPrices.find(p => p.id === 1)?.quote.USD.price || 0,
+            eth: currentPrices.find(p => p.id === 1027)?.quote.USD.price || 0,
+            solana: currentPrices.find(p => p.id === 5426)?.quote.USD.price || 0,
+            tether: currentPrices.find(p => p.id === 825)?.quote.USD.price || 0,
+            xrp: currentPrices.find(p => p.id === 52)?.quote.USD.price || 0,
+        };
+
+        // 3. Fetch all users
+        const users = await findAny(1); // Assuming 1 is User model
 
         const bulkOps = users.map(user => {
             const wallet = user.wallet;
             const assets = wallet.crypto.cryptoAssets;
 
-            // 3. Calculate total crypto value in USD
+            // 4. Calculate new crypto balance
             const newCryptoBalance = (
-                (assets.btc || 0) * prices.bitcoin +
-                (assets.eth || 0) * prices.ethereum +
+                (assets.bitcoin || 0) * prices.btc +
+                (assets.ethereum || 0) * prices.eth +
                 (assets.solana || 0) * prices.solana +
                 (assets.tether || 0) * prices.tether +
                 (assets.xrp || 0) * prices.xrp
             );
 
-            // 4. Get old crypto balance
             const oldCryptoBalance = wallet.crypto.cryptoBalance || 0;
-
-            // 5. Update fields
             const balanceAdjustment = newCryptoBalance - oldCryptoBalance;
-            const newTotalBalance = wallet.balance + balanceAdjustment;
 
-            // 6. Calculate percentage change due to crypto adjustment
+            const oldTotalBalance = wallet.balance || 0;
+            const newTotalBalance = oldTotalBalance + balanceAdjustment;
+
+            // 5. Calculate fluctuation
             let percentChange = 0;
-
-            if (wallet.balance !== 0) {
-                percentChange = (balanceAdjustment / wallet.balance) * 100;
-                percentChange = Number(percentChange.toFixed(2)); // rounded to 2 decimals
+            if (oldTotalBalance !== 0) {
+                percentChange = (balanceAdjustment / oldTotalBalance) * 100;
+                percentChange = Number(percentChange.toFixed(2));
             } else {
-                percentChange = balanceAdjustment === 0 ? 0 : 100; // optional: treat 100% change when balance was 0
+                percentChange = balanceAdjustment === 0 ? 0 : 100;
             }
 
+            // Optional safety check
+            if (isNaN(percentChange)) {
+                console.warn(`percentChange is NaN for user: ${user._id}`);
+                percentChange = 0;
+            }
 
             return {
                 updateOne: {
-                    filter: { _id: user._id }, // Filter by user ID
-                    // Update the user document with new values
+                    filter: { _id: user._id },
                     update: {
                         $set: {
                             'wallet.crypto.cryptoBalance': newCryptoBalance,
                             'wallet.balance': newTotalBalance,
-                            'wallet.fluctuation': percentChange
+                            'wallet.fluctuation': percentChange,
                         },
                     },
                 },
             };
         });
 
-        // 6. Bulk write to DB
+        // 6. Execute bulk write
         if (bulkOps.length) {
             await User.bulkWrite(bulkOps);
-            console.log(`Updated ${bulkOps.length} user wallets with new crypto balances at [${new Date().toLocaleDateString()}]`);
-            return { mesage: `Updated ${bulkOps.length} user wallets with new crypto balances`, success: true };
+            console.log(`✅ Updated ${bulkOps.length} user wallets at [${new Date().toLocaleDateString()}]`);
+            return {
+                message: `Updated ${bulkOps.length} user wallets with new crypto balances`,
+                success: true,
+            };
         } else {
-            console.log(`No user wallets found to update at:[${new Date().toLocaleDateString()}]`);
-            return { mesage: `No user wallets found to update`, success: false };
+            console.log(`⚠️ No user wallets found to update at [${new Date().toLocaleDateString()}]`);
+            return {
+                message: `No user wallets found to update`,
+                success: false,
+            };
         }
 
     } catch (error) {
-        console.error(`Error updating crypto balances at [${new Date().toLocaleDateString()}]:`, error);
-        return { message: `Error updating crypto balances`, success: false };
+        console.error(`❌ Error updating crypto balances at [${new Date().toLocaleDateString()}]:`, error);
+        return {
+            message: `Error updating crypto balances`,
+            success: false,
+        };
     }
 };
+
 export default updateWalletsWithCrypto;
