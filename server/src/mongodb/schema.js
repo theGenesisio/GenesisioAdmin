@@ -420,6 +420,42 @@ const plansSchema = new Schema({
         min: [0, 'Duration must be a positive number'],
     },
 }, { timestamps: true });
+const tierSchema = new Schema({
+    name: {
+        type: String,
+        required: [true, 'Tier name is required'],
+        trim: true,
+    },
+    price: {
+        type: Number,
+        default: 0,
+    },
+    details: {
+        type: String,
+        required: [true, 'Tier details are required'],
+        trim: true,
+    },
+}, { timestamps: true });
+const upgradeSchema = new Schema({
+    tier: tierSchema,
+    user: {
+        email: {
+            type: String,
+            required: true,
+        },
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,
+        },
+    },
+    status: {
+        type: String,
+        enum: ['pending', 'active', 'failed', 'mailed'],
+        default: 'pending',
+        required: true,
+    },
+}, { timestamps: true });
 const investmentSchema = new Schema({
     plan: {
         name: {
@@ -752,4 +788,4 @@ livetradeSchema.pre('save', function (next) {
     }
     next();
 });
-export { refreshTokenSchema, billingSchema, adminSchema, walletSchema, KYCSchema, userSchema, depositSchema, withdrawalRequestSchema, whatsappSchema, notificationSchema, plansSchema, investmentSchema, topupSchema, livetradeSchema, MailLogSchema, copytradeSchema, traderSchema, livePriceSchema };
+export { refreshTokenSchema, billingSchema, adminSchema, walletSchema, KYCSchema, userSchema, depositSchema, withdrawalRequestSchema, whatsappSchema, notificationSchema, plansSchema, investmentSchema, topupSchema, livetradeSchema, MailLogSchema, copytradeSchema, traderSchema, livePriceSchema, upgradeSchema, tierSchema };

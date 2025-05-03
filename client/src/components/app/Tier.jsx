@@ -4,28 +4,27 @@ import FetchWithAuth from "../auth/api";
 import Loader from "./subComponents/Loader.jsx";
 import { formatToNewYorkTime } from "../../assets/helpers.js";
 import { TrashIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-import InvestmentTable from "./subComponents/InvestmentTable.jsx";
 import { Card } from "@material-tailwind/react";
 
 /**
- * Plans component allows users to create, view, and delete investment plans.
- * It includes form inputs for creating new plans and a table for displaying existing plans.
+ * tiers component allows users to create, view, and delete investment tiers.
+ * It includes form inputs for creating new tiers and a table for displaying existing tiers.
  *
  * @component
  * @example
  * return (
- *   <Plans />
+ *   <tiers />
  * )
  *
  * @returns {JSX.Element} The rendered component.
  *
  * @function
- * @name Plans
+ * @name tiers
  *
  * @description
- * This component handles the creation, viewing, and deletion of investment plans.
- * It includes form inputs for creating new plans and a table for displaying existing plans.
- * The component also supports searching and pagination of plans.
+ * This component handles the creation, viewing, and deletion of investment tiers.
+ * It includes form inputs for creating new tiers and a table for displaying existing tiers.
+ * The component also supports searching and pagination of tiers.
  *
  * @property {function} useNotification - Custom hook for displaying notifications.
  * @property {function} FetchWithAuth - Custom function for making authenticated API requests.
@@ -40,29 +39,27 @@ import { Card } from "@material-tailwind/react";
  * @property {function} setROIPercentage - Function to set the ROI percentage state.
  * @property {function} setDuration - Function to set the duration state.
  * @property {function} setLoading - Function to set the loading state.
- * @property {function} setPlans - Function to set the plans state.
+ * @property {function} settiers - Function to set the tiers state.
  * @property {function} setSearchQuery - Function to set the search query state.
  * @property {function} setCurrentPage - Function to set the current page state.
  * @property {function} setItemsPerPage - Function to set the items per page state.
  * @property {function} setTotalItems - Function to set the total items state.
  * @property {function} updateItemsPerPage - Function to update the items per page based on screen width.
- * @property {function} handlePlans - Function to handle the creation of new plans.
- * @property {function} fetchPlans - Function to fetch existing plans.
- * @property {function} deletePlan - Function to delete a plan.
- * @property {function} filteredPlans - Memoized value of filtered plans based on search query.
- * @property {function} paginatedPlans - Memoized value of paginated plans based on current page and items per page.
- * @property {function} totalPages - Memoized value of total pages based on filtered plans and items per page.
+ * @property {function} handletiers - Function to handle the creation of new tiers.
+ * @property {function} fectchTiers - Function to fetch existing tiers.
+ * @property {function} deleteTier - Function to delete a plan.
+ * @property {function} filteredTiers - Memoized value of filtered tiers based on search query.
+ * @property {function} paginatedtiers - Memoized value of paginated tiers based on current page and items per page.
+ * @property {function} totalPages - Memoized value of total pages based on filtered tiers and items per page.
  */
-const Plans = () => {
+const Tiers = () => {
   const { addNotification } = useNotification();
   const [name, setName] = useState("");
-  const [max, setMax] = useState("");
-  const [min, setMin] = useState("");
-  const [ROIPercentage, setROIPercentage] = useState("");
-  const [duration, setDuration] = useState("");
+  const [details, setDetails] = useState("");
+  const [price, setPrice] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const [plans, setPlans] = useState([]);
+  const [tiers, settiers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -85,28 +82,22 @@ const Plans = () => {
     return () => window.removeEventListener("resize", updateItemsPerPage);
   }, []);
 
-  const handlePlans = async (e) => {
+  const handletiers = async (e) => {
     e.preventDefault();
-    if (parseFloat(min) >= parseFloat(max)) {
-      addNotification("Min value should be less than Max value", "error");
-      return;
-    }
     setLoading(true);
     try {
       const response = await FetchWithAuth(
-        `/plans`,
+        `/tiers`,
         {
           method: "POST",
           body: JSON.stringify({
             name,
-            max,
-            min,
-            ROIPercentage,
-            duration,
+            price,
+            details,
           }),
           credentials: "include",
         },
-        "Failed to create plan"
+        "Failed to create tier"
       );
       if (response.failed) {
         addNotification(response.message, "error");
@@ -115,39 +106,37 @@ const Plans = () => {
         if (success) {
           addNotification(message, "success");
           setName("");
-          setMax("");
-          setMin("");
-          setROIPercentage("");
-          setDuration("");
-          fetchPlans(); // Refresh plans
+          setDetails("");
+          setPrice("");
+          fectchTiers(); // Refresh tiers
         } else {
-          addNotification("Plan creation was not successful", "error");
+          addNotification("Tier creation was not successful", "error");
         }
       }
     } catch (err) {
-      addNotification("An error occurred while creating the plan", "error");
+      addNotification("An error occurred while creating the tier", "error");
       console.error("Fetch error:", err);
     } finally {
       setLoading(false);
     }
   };
 
-  const fetchPlans = async () => {
+  const fectchTiers = async () => {
     try {
       setLoading(true);
       const response = await FetchWithAuth(
-        `/plans`,
+        `/tiers`,
         {
           method: "GET",
           credentials: "include",
         },
-        "Failed to fetch plans"
+        "Failed to fetch tiers"
       );
       if (response.failed) {
         addNotification(response.message, "error");
       } else {
-        const { plans, message } = response;
-        plans && setPlans(plans.reverse());
+        const { tiers, message } = response;
+        tiers && settiers(tiers.reverse());
         addNotification(message);
       }
     } catch (err) {
@@ -157,17 +146,17 @@ const Plans = () => {
       setLoading(false);
     }
   };
-  const deletePlan = async (id) => {
+  const deleteTier = async (id) => {
     try {
       setLoading(true);
       const response = await FetchWithAuth(
-        `/plans`,
+        `/tiers`,
         {
           method: "DELETE",
           body: JSON.stringify({ _id: id }),
           credentials: "include",
         },
-        "Failed to delete plan"
+        "Failed to delete tier"
       );
       if (response.failed) {
         addNotification(response.message, "error");
@@ -175,9 +164,9 @@ const Plans = () => {
         const { success, message } = response;
         if (success) {
           addNotification(message, "success");
-          fetchPlans(); // Refresh plans
+          fectchTiers(); // Refresh tiers
         } else {
-          addNotification("Plan deletion was not successful", "error");
+          addNotification("Tier deletion was not successful", "error");
         }
       }
     } catch (err) {
@@ -188,29 +177,29 @@ const Plans = () => {
     }
   };
   useEffect(() => {
-    fetchPlans();
+    fectchTiers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const filteredPlans = useMemo(() => {
-    return plans.filter((plan) => {
+  const filteredTiers = useMemo(() => {
+    return tiers.filter((plan) => {
       return !searchQuery || plan.name.toLowerCase().includes(searchQuery.toLowerCase());
     });
-  }, [plans, searchQuery]);
+  }, [tiers, searchQuery]);
 
-  const paginatedPlans = useMemo(() => {
+  const paginatedtiers = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return filteredPlans.slice(startIndex, endIndex);
-  }, [filteredPlans, currentPage, itemsPerPage]);
+    return filteredTiers.slice(startIndex, endIndex);
+  }, [filteredTiers, currentPage, itemsPerPage]);
 
   const totalPages = useMemo(() => {
-    return Math.ceil(filteredPlans.length / itemsPerPage);
-  }, [filteredPlans.length, itemsPerPage]);
+    return Math.ceil(filteredTiers.length / itemsPerPage);
+  }, [filteredTiers.length, itemsPerPage]);
 
   useEffect(() => {
-    setTotalItems(filteredPlans.length); // Track total items
-  }, [filteredPlans]);
+    setTotalItems(filteredTiers.length); // Track total items
+  }, [filteredTiers]);
 
   return (
     <main className='grid md:grid-cols-5 grid-cols-1 gap-4 pb-4'>
@@ -219,7 +208,7 @@ const Plans = () => {
         variant='gradient'
         color='gray'>
         <h2 className='text-lg font-semibold mb-2'>Create Investments</h2>
-        <form onSubmit={handlePlans} className='flex flex-col space-y-2'>
+        <form onSubmit={handletiers} className='flex flex-col space-y-2'>
           <div>
             <label className='block text-sm font-semibold text-text-light mb-1' htmlFor='name'>
               Name
@@ -234,63 +223,35 @@ const Plans = () => {
             />
           </div>
           <div>
-            <label className='block text-sm font-semibold text-text-light mb-1' htmlFor='max'>
-              Max($)
+            <label className='block text-sm font-semibold text-text-light mb-1' htmlFor='price'>
+              Price ($)
             </label>
             <input
               type='number'
               className='form-input w-full'
-              value={max}
-              onChange={(e) => setMax(e.target.value)}
-              id='max'
-              placeholder=''
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              id='price'
+              placeholder='0.00'
               required
             />
           </div>
           <div>
-            <label className='block text-sm font-semibold text-text-light mb-1' htmlFor='min'>
-              Min($)
+            <label className='block text-sm font-semibold text-text-light mb-1' htmlFor='details'>
+              Details
             </label>
-            <input
-              type='number'
+            <textarea
               className='form-input w-full'
-              value={min}
-              onChange={(e) => setMin(e.target.value)}
-              id='min'
-              placeholder=''
-              required
-            />
-          </div>
-          <div>
-            <label
-              className='block text-sm font-semibold text-text-light mb-1'
-              htmlFor='ROIPercentage'>
-              ROI Percentage(%)
-            </label>
-            <input
-              type='number'
-              className='form-input w-full'
-              value={ROIPercentage}
-              onChange={(e) => setROIPercentage(e.target.value)}
-              id='ROIPercentage'
-              required
-            />
-          </div>
-          <div>
-            <label className='block text-sm font-semibold text-text-light mb-1' htmlFor='duration'>
-              Duration (days)
-            </label>
-            <input
-              type='number'
-              className='form-input w-full'
-              value={duration}
-              onChange={(e) => setDuration(e.target.value)}
-              id='duration'
+              rows='3'
+              value={details}
+              onChange={(e) => setDetails(e.target.value)}
+              placeholder='Enter details of this tier'
+              id='details'
               required
             />
           </div>
           <button type='submit' className='accent-btn w-full' disabled={loading}>
-            {loading ? "Creating..." : "Create Plan"}
+            {loading ? "Creating..." : "Create Tier"}
           </button>
         </form>
       </Card>
@@ -299,11 +260,11 @@ const Plans = () => {
         variant='gradient'
         color='gray'>
         <div className='p-4 flex flex-col md:flex-row justify-between'>
-          <h2 className='text-lg font-semibold'>Available Investments</h2>
+          <h2 className='text-lg font-semibold'>Available Tiers</h2>
           <div className='relative w-full max-w-sm md:ml-4 mt-2 md:mt-0'>
             <input
               type='text'
-              placeholder='Search by Plan Name'
+              placeholder='Search by tier Name'
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className='form-input w-full'
@@ -319,39 +280,35 @@ const Plans = () => {
               <thead className='bg-primary-mild'>
                 <tr>
                   <th className='p-4'>Name</th>
-                  <th className='p-4 text-nowrap'>Min ($)</th>
-                  <th className='p-4 text-nowrap'>Max ($)</th>
-                  <th className='p-4 text-nowrap'>ROI Percentage (%)</th>
-                  <th className='p-4'>Duration</th>
+                  <th className='p-4 text-nowrap'>Price ($)</th>
+                  <th className='p-4'>Details</th>
                   <th className='p-4'>Created</th>
                   <th className='p-4'>Delete</th>
                 </tr>
               </thead>
               <tbody>
-                {paginatedPlans.map((plan) => (
+                {paginatedtiers.map((plan) => (
                   <tr key={plan._id} className='border-b hover:bg-primary-dark'>
                     <td className='p-4 text-nowrap'>{plan.name}</td>
-                    <td className='p-4'>{parseFloat(plan.limits.min).toLocaleString()}</td>
-                    <td className='p-4'>{parseFloat(plan.limits.max).toLocaleString()}</td>
-                    <td className='p-4'>{plan.ROIPercentage}</td>
-                    <td className='p-4'>{plan.duration}</td>
+                    <td className='p-4'>{parseFloat(plan.price).toLocaleString()}</td>
+                    <td className='p-4 text-wrap min-w-[16rem]'>{plan.details}</td>
                     <td className='p-4 min-w-[16rem]'>{formatToNewYorkTime(plan.createdAt)}</td>
                     <td className='py-4'>
                       <TrashIcon
-                        title='Delete Plan'
+                        title='Delete Tier'
                         className='h-5 w-5 hover:scale-110 transition-all cursor-pointer text-text-light mx-auto'
                         onClick={(e) => {
                           e.stopPropagation(); // Prevents <tr>'s onClick from firing
-                          deletePlan(plan._id);
+                          deleteTier(plan._id);
                         }}
                       />
                     </td>
                   </tr>
                 ))}
-                {paginatedPlans.length === 0 && (
+                {paginatedtiers.length === 0 && (
                   <tr>
-                    <td colSpan='6' className='p-4 text-center'>
-                      No Investments found.
+                    <td colSpan='5' className='p-4 text-center'>
+                      No tiers found.
                     </td>
                   </tr>
                 )}
@@ -392,9 +349,8 @@ const Plans = () => {
           </div>
         </div>
       </Card>
-      <InvestmentTable />
     </main>
   );
 };
 
-export default Plans;
+export default Tiers;

@@ -12,8 +12,8 @@ const updateWalletsWithCrypto = async () => {
 
         // 2. Extract prices
         const prices = {
-            btc: currentPrices.find(p => p.id === 1)?.quote.USD.price || 0,
-            eth: currentPrices.find(p => p.id === 1027)?.quote.USD.price || 0,
+            bitcoin: currentPrices.find(p => p.id === 1)?.quote.USD.price || 0,
+            ethereum: currentPrices.find(p => p.id === 1027)?.quote.USD.price || 0,
             solana: currentPrices.find(p => p.id === 5426)?.quote.USD.price || 0,
             tether: currentPrices.find(p => p.id === 825)?.quote.USD.price || 0,
             xrp: currentPrices.find(p => p.id === 52)?.quote.USD.price || 0,
@@ -28,8 +28,8 @@ const updateWalletsWithCrypto = async () => {
 
             // 4. Calculate new crypto balance
             const newCryptoBalance = (
-                (assets.bitcoin || 0) * prices.btc +
-                (assets.ethereum || 0) * prices.eth +
+                (assets.bitcoin || 0) * prices.bitcoin +
+                (assets.ethereum || 0) * prices.ethereum +
                 (assets.solana || 0) * prices.solana +
                 (assets.tether || 0) * prices.tether +
                 (assets.xrp || 0) * prices.xrp

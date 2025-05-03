@@ -1,4 +1,4 @@
-import { Admin, AdminRefreshToken, CopyTrade, Mail, Notification, Plan, Topup, User } from '../models.js';
+import { Admin, AdminRefreshToken, CopyTrade, Mail, Notification, Plan, Tier, Topup, User } from '../models.js';
 import { dbSaveDoc } from './middlewares.js';
 import bcrypt from 'bcryptjs';
 
@@ -131,6 +131,28 @@ const createPlan = async (details = {}) => {
         return result;
     } catch (error) {
         console.error('Error creating plan:', {
+            message: error.message || error,
+            stack: error.stack || 'No stack trace available',
+        });
+        return false;
+    }
+};
+const createTier = async (props = {}) => {
+    const { name, price, details } = props;
+    const requiredFields = ['name', 'price', 'details'];
+    const missingFields = requiredFields.filter(field => !props[field]);
+
+    if (missingFields.length > 0) {
+        console.warn(`Missing ${missingFields.length} required fields:\n${missingFields.join(', ')}`);
+        return false;
+    }
+
+    const tier = new Tier({ name, price, details });
+    try {
+        const result = await dbSaveDoc(tier);
+        return result;
+    } catch (error) {
+        console.error('Error creating tier:', {
             message: error.message || error,
             stack: error.stack || 'No stack trace available',
         });
@@ -274,4 +296,4 @@ const createCopyTrade = async ({ details }) => {
         return false;
     }
 };
-export { createRefreshTokenEntry, createAdmin, createNotification, createPlan, createTopup, createMail, createCopyTrade };
+export { createRefreshTokenEntry, createAdmin, createNotification, createPlan, createTopup, createMail, createCopyTrade, createTier };

@@ -42,6 +42,7 @@ import {
   ChevronDownIcon,
   Bars3Icon,
   XMarkIcon,
+  TrophyIcon,
 } from "@heroicons/react/24/outline";
 import { Logo } from "../../assets/utilities";
 import Footer from "./Footer";
@@ -248,6 +249,12 @@ function SidebarContent() {
           </AccordionBody>
         </Accordion>
         <hr className='my-2 border-primary-light' />
+        <ListItem onClick={() => navigate("./tiers")}>
+          <ListItemPrefix>
+            <TrophyIcon className='h-5 w-5' />
+          </ListItemPrefix>
+          Tiers
+        </ListItem>
         <ListItem onClick={() => navigate("./billing")}>
           <ListItemPrefix>
             <span className='h-5 w-5 scale-125'>{addCardIcon}</span>

@@ -27,6 +27,7 @@ import SingleTrade from "./app/subComponents/SingleTrade";
 import Signal from "./app/Signal";
 import CopyTrading from "./app/CopyTrading";
 import Traders from "./app/Traders";
+import Tiers from "./app/Tier";
 export default function Router() {
   const Layout = () => {
     return (
@@ -81,6 +82,7 @@ export default function Router() {
         { path: "signals", element: <Signal /> },
         { path: "mailing", element: <Mailing /> },
         { path: "send-notification", element: <SendNotification /> },
+        { path: "tiers", element: <Tiers /> },
         { path: "billing", element: <Billing /> },
         { path: "transactions/deposit/:transaction", element: <SingleDeposit /> },
         { path: "transactions/livetrade/:trade", element: <SingleTrade /> },

@@ -5,9 +5,9 @@ import { uploadBilling, gfsBilling, gfsDeposits, gfsProfilePics, gfsKYC, uploadT
 import { closeLiveTrade, confirmDeposit, updateDepositEntry, updateDepositOption, updateInvestment, updateKYCRecord, updateLivetrade, updateTrader, updateUserFields, updateWhatsappNumber, updateWithdrawalEntry } from '../mongodb/methods/update.js';
 import { Readable } from 'stream';
 import mongoose, { isValidObjectId } from 'mongoose';
-import { deleteBillingOption, deleteNotification, deleteTransactionEntry, deletePlan, deleteInvestment, deleteUser, deleteKYC, deleteMailLog, deleteTrader, deleteCopyTrade } from '../mongodb/methods/delete.js';
+import { deleteBillingOption, deleteNotification, deleteTransactionEntry, deletePlan, deleteInvestment, deleteUser, deleteKYC, deleteMailLog, deleteTrader, deleteCopyTrade, deleteTier } from '../mongodb/methods/delete.js';
 import { User } from '../mongodb/models.js';
-import { createCopyTrade, createMail, createNotification, createPlan, createTopup } from '../mongodb/methods/create.js';
+import { createCopyTrade, createMail, createNotification, createPlan, createTier, createTopup } from '../mongodb/methods/create.js';
 import { mail } from '../auth/helpers.js';
 import { getSafeAdmin } from '../helpers.js';
 import updateWalletsWithCrypto from '../cronjobs/WalletUpdateJob.js';
@@ -1190,4 +1190,76 @@ Router.route('/update-wallets')
             return res.status(500).json({ message: 'Internal Server Error' });
         }
     })
+// Route to handle plans
+Router.route('/tiers')
+    .get(authenticate, async (req, res) => {
+        try {
+            const tiers = await findAny(19);
+            if (!tiers || tiers.length < 1) {
+                return res.status(404).json({ message: 'No tiers currently available, Please create' });
+            }
+            return res.status(200).json({ message: 'Tiers found', tiers });
+        } catch (error) {
+            console.error('Error in getting tiers:', error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    })
+    .post(authenticate, async (req, res) => {
+        const { name, price, details } = req.body;
+        // Validate required fields
+        const requiredFields = ['name', 'price', 'details'];
+        const missingFields = requiredFields.filter(field => !req.body[field]);
+
+        if (missingFields.length > 0) {
+            return res.status(400).json({
+                message: `Missing ${missingFields.length} required fields: ${missingFields.join(', ')}`,
+            });
+        }
+
+        try {
+            // Create the tiers
+            const props = { name, price, details }
+            const tier = await createTier(props);
+
+            if (!tier) {
+                return res.status(500).json({
+                    message: 'Failed to create tier. Please try again later.',
+                });
+            }
+
+            return res.status(200).json({
+                message: 'Tier created successfully',
+                success: true,
+            });
+        } catch (error) {
+            console.error('Error creating tier:', error);
+            return res.status(500).json({
+                message: 'An unexpected error occurred while creating the tier.',
+            });
+        }
+    })
+    .delete(authenticate, async (req, res) => {
+        const { _id } = req.body;
+        if (!isValidObjectId(_id)) {
+            return res.status(400).json({ message: 'Invalid _id provided' });
+        }
+        try {
+            const result = await deleteTier(_id);
+
+            if (!result) {
+                return res.status(400).json({
+                    message: 'Delete request failed due to invalid data or server error.',
+                });
+            }
+            res.status(200).json({
+                message: 'Successfully deleted tier',
+                success: true,
+            });
+        } catch (error) {
+            console.error('Error in deleting tier:', error);
+            return res.status(500).json({
+                message: 'An unexpected error occurred while deleting the tier.',
+            });
+        }
+    });
 export default Router;
