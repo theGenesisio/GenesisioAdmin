@@ -26,8 +26,8 @@ const updateWalletsWithCrypto = async () => {
 
             // 3. Calculate total crypto value in USD
             const newCryptoBalance = (
-                (assets.btc || 0) * prices.btc +
-                (assets.eth || 0) * prices.eth +
+                (assets.btc || 0) * prices.bitcoin +
+                (assets.eth || 0) * prices.ethereum +
                 (assets.solana || 0) * prices.solana +
                 (assets.tether || 0) * prices.tether +
                 (assets.xrp || 0) * prices.xrp
