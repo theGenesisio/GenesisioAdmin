@@ -358,7 +358,7 @@ const Topup = () => {
             }`}>
             {equivalentLoading
               ? "Loading equivalent..."
-              : `=$${parseFloat(amount * liveEquivalent).toFixed(6)}`}
+              : `=$${parseFloat(amount * liveEquivalent).toFixed(2)}`}
           </p>
           <div>
             <label
