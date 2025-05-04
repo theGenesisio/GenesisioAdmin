@@ -2,10 +2,10 @@ import { Router as _Router } from "express";
 import { authenticate } from '../auth/middlware.js';
 import { findAfterDate, findAny, findAnyFilter, findLastCreatedObjects, findOneFilter } from '../mongodb/methods/read.js';
 import { uploadBilling, gfsBilling, gfsDeposits, gfsProfilePics, gfsKYC, uploadTraderImg, gfsTraderImg } from './imageRouter.js';
-import { closeLiveTrade, confirmDeposit, updateDepositEntry, updateDepositOption, updateInvestment, updateKYCRecord, updateLivetrade, updateTrader, updateUserFields, updateWhatsappNumber, updateWithdrawalEntry } from '../mongodb/methods/update.js';
+import { closeLiveTrade, confirmDeposit, updateDepositEntry, updateDepositOption, updateInvestment, updateKYCRecord, updateLivetrade, updateTrader, updateUpdateRequest, updateUserFields, updateWhatsappNumber, updateWithdrawalEntry } from '../mongodb/methods/update.js';
 import { Readable } from 'stream';
 import mongoose, { isValidObjectId } from 'mongoose';
-import { deleteBillingOption, deleteNotification, deleteTransactionEntry, deletePlan, deleteInvestment, deleteUser, deleteKYC, deleteMailLog, deleteTrader, deleteCopyTrade, deleteTier } from '../mongodb/methods/delete.js';
+import { deleteBillingOption, deleteNotification, deleteTransactionEntry, deletePlan, deleteInvestment, deleteUser, deleteKYC, deleteMailLog, deleteTrader, deleteCopyTrade, deleteTier, deleteUpgradeRequest } from '../mongodb/methods/delete.js';
 import { User } from '../mongodb/models.js';
 import { createCopyTrade, createMail, createNotification, createPlan, createTier, createTopup } from '../mongodb/methods/create.js';
 import { mail } from '../auth/helpers.js';
@@ -581,13 +581,13 @@ Router.route('/investments')
                 });
             }
             res.status(200).json({
-                message: 'Successfully deleted plan',
+                message: 'Successfully deleted investment',
                 success: true,
             });
         } catch (error) {
-            console.error('Error in deleting plan:', error);
+            console.error('Error in deleting investment:', error);
             return res.status(500).json({
-                message: 'An unexpected error occurred while deleting the plan.',
+                message: 'An unexpected error occurred while deleting the investment.',
             });
         }
     })
@@ -1262,4 +1262,57 @@ Router.route('/tiers')
             });
         }
     });
+Router.route('/upgrade')
+    .get(authenticate, async (req, res) => {
+        try {
+            const requests = await findAny(20);
+            if (!requests || requests.length < 1) {
+                return res.status(404).json({ message: 'No requests currently available' });
+            }
+            return res.status(200).json({ message: 'Requests found', requests });
+        } catch (error) {
+            console.error('Error in getting requests:', error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    })
+    .delete(authenticate, async (req, res) => {
+        const { _id } = req.body;
+        if (!isValidObjectId(_id)) {
+            return res.status(400).json({ message: 'Invalid _id provided' });
+        }
+        try {
+            const result = await deleteUpgradeRequest(_id);
+
+            if (!result) {
+                return res.status(400).json({
+                    message: 'Delete request failed due to invalid data or server error.',
+                });
+            }
+            res.status(200).json({
+                message: 'Successfully deleted request',
+                success: true,
+            });
+        } catch (error) {
+            console.error('Error in deleting request:', error);
+            return res.status(500).json({
+                message: 'An unexpected error occurred while deleting the request.',
+            });
+        }
+    })
+    .put(authenticate, async (req, res) => {
+        const { _id, status } = req.body;
+        if (!isValidObjectId(_id)) {
+            return res.status(400).json({ message: 'Invalid _id provided' });
+        }
+        try {
+            const updatedRequest = await updateUpdateRequest(_id, status)
+            if (!updatedRequest) {
+                return res.status(500).json({ message: 'Error updating request entry' });
+            }
+            res.status(200).json({ message: 'Update successful', success: true });
+        } catch (error) {
+            console.error('Error updating request:', error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    })
 export default Router;

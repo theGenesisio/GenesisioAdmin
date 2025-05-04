@@ -1,5 +1,5 @@
 import { isValidObjectId } from 'mongoose';
-import { Admin, Billing, Deposit, Investment, KYC, LiveTrade, Trader, User, Whatsapp, WithdrawalRequest } from '../models.js';
+import { Admin, Billing, Deposit, Investment, KYC, LiveTrade, Trader, Upgrade, User, Whatsapp, WithdrawalRequest } from '../models.js';
 
 /**
  * Update or create a deposit option.
@@ -297,6 +297,20 @@ const updateInvestment = async (_id, status) => {
         return false;
     }
 };
+const updateUpdateRequest = async (_id, status) => {
+    try {
+        const request = await Upgrade.findById(_id);
+        if (!request) {
+            throw new Error('Investment entry not found');
+        }
+        request.status = status;
+        await request.save();
+        return request;
+    } catch (error) {
+        console.error('Error updating upgrade request entry:', error);
+        return false;
+    }
+};
 /**
  * Update a livetrade and handle associated wallet updates.
  * @param {string} _id - The ID of the livetrade entry.
@@ -388,5 +402,6 @@ export {
     updateKYCRecord,
     updateLivetrade,
     closeLiveTrade,
-    updateTrader
+    updateTrader,
+    updateUpdateRequest,
 };

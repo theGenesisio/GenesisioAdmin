@@ -1,5 +1,5 @@
 import { isValidObjectId } from 'mongoose';
-import { Admin, AdminRefreshToken, Billing, CopyTrade, Investment, KYC, Mail, models, Notification, Plan, Tier, Trader, User } from '../models.js';
+import { Admin, AdminRefreshToken, Billing, CopyTrade, Investment, KYC, Mail, models, Notification, Plan, Tier, Trader, Upgrade, User } from '../models.js';
 
 /**
  * Delete an admin refresh token entry.
@@ -290,6 +290,30 @@ const deleteInvestment = async (_id) => {
         return false;
     }
 };
+const deleteUpgradeRequest = async (_id) => {
+    try {
+        // Validate _id as a valid MongoDB ObjectId
+        if (!isValidObjectId(_id)) {
+            throw new Error('Invalid _id provided');
+        }
+
+        // Attempt to delete the doc by ID
+        const result = await Upgrade.findByIdAndDelete(_id);
+
+        if (result) {
+            return true;
+        } else {
+            console.warn(`Request not found or not deleted: ${_id}`);
+            return false;
+        }
+    } catch (error) {
+        console.error('Error deleting upgrade request:', {
+            message: error.message || error,
+            stack: error.stack || 'No stack trace available',
+        });
+        return false;
+    }
+};
 /**
  * Delete a user.
  * @param {string} _id - The ID of the user to delete.
@@ -387,6 +411,8 @@ export {
     deleteUser,
     deleteKYC,
     deleteAdmin,
-    deleteMailLog, deleteTrader, deleteCopyTrade
-    , deleteTier
+    deleteMailLog,
+    deleteTrader,
+    deleteCopyTrade, deleteTier,
+    deleteUpgradeRequest
 };

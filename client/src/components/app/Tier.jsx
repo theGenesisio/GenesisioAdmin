@@ -5,6 +5,7 @@ import Loader from "./subComponents/Loader.jsx";
 import { formatToNewYorkTime } from "../../assets/helpers.js";
 import { TrashIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { Card } from "@material-tailwind/react";
+import UpgradeRequestsTable from "./subComponents/UpgradeRequestsTable.jsx";
 
 /**
  * tiers component allows users to create, view, and delete investment tiers.
@@ -329,6 +330,7 @@ const Tiers = () => {
           </div>
         </div>
       </Card>
+      <UpgradeRequestsTable />
     </main>
   );
 };
