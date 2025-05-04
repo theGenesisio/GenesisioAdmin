@@ -138,8 +138,8 @@ const createPlan = async (details = {}) => {
     }
 };
 const createTier = async (props = {}) => {
-    const { name, price, details } = props;
-    const requiredFields = ['name', 'price', 'details'];
+    const { name, details } = props;
+    const requiredFields = ['name', 'details'];
     const missingFields = requiredFields.filter(field => !props[field]);
 
     if (missingFields.length > 0) {
@@ -147,7 +147,7 @@ const createTier = async (props = {}) => {
         return false;
     }
 
-    const tier = new Tier({ name, price, details });
+    const tier = new Tier({ name, details });
     try {
         const result = await dbSaveDoc(tier);
         return result;

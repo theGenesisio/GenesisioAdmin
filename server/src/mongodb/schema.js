@@ -426,10 +426,6 @@ const tierSchema = new Schema({
         required: [true, 'Tier name is required'],
         trim: true,
     },
-    price: {
-        type: Number,
-        default: 0,
-    },
     details: {
         type: String,
         required: [true, 'Tier details are required'],

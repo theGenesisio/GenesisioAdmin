@@ -56,9 +56,7 @@ const Tiers = () => {
   const { addNotification } = useNotification();
   const [name, setName] = useState("");
   const [details, setDetails] = useState("");
-  const [price, setPrice] = useState("");
   const [loading, setLoading] = useState(false);
-
   const [tiers, settiers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -92,7 +90,6 @@ const Tiers = () => {
           method: "POST",
           body: JSON.stringify({
             name,
-            price,
             details,
           }),
           credentials: "include",
@@ -107,7 +104,6 @@ const Tiers = () => {
           addNotification(message, "success");
           setName("");
           setDetails("");
-          setPrice("");
           fectchTiers(); // Refresh tiers
         } else {
           addNotification("Tier creation was not successful", "error");
@@ -207,7 +203,7 @@ const Tiers = () => {
         className='profile-box flex flex-col space-y-4 col-span-1 md:col-span-2'
         variant='gradient'
         color='gray'>
-        <h2 className='text-lg font-semibold mb-2'>Create Investments</h2>
+        <h2 className='text-lg font-semibold mb-2'>Create Tiers</h2>
         <form onSubmit={handletiers} className='flex flex-col space-y-2'>
           <div>
             <label className='block text-sm font-semibold text-text-light mb-1' htmlFor='name'>
@@ -219,20 +215,6 @@ const Tiers = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               id='name'
-              required
-            />
-          </div>
-          <div>
-            <label className='block text-sm font-semibold text-text-light mb-1' htmlFor='price'>
-              Price ($)
-            </label>
-            <input
-              type='number'
-              className='form-input w-full'
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              id='price'
-              placeholder='0.00'
               required
             />
           </div>
@@ -280,7 +262,6 @@ const Tiers = () => {
               <thead className='bg-primary-mild'>
                 <tr>
                   <th className='p-4'>Name</th>
-                  <th className='p-4 text-nowrap'>Price ($)</th>
                   <th className='p-4'>Details</th>
                   <th className='p-4'>Created</th>
                   <th className='p-4'>Delete</th>
@@ -290,7 +271,6 @@ const Tiers = () => {
                 {paginatedtiers.map((plan) => (
                   <tr key={plan._id} className='border-b hover:bg-primary-dark'>
                     <td className='p-4 text-nowrap'>{plan.name}</td>
-                    <td className='p-4'>{parseFloat(plan.price).toLocaleString()}</td>
                     <td className='p-4 text-wrap min-w-[16rem]'>{plan.details}</td>
                     <td className='p-4 min-w-[16rem]'>{formatToNewYorkTime(plan.createdAt)}</td>
                     <td className='py-4'>

@@ -1205,9 +1205,9 @@ Router.route('/tiers')
         }
     })
     .post(authenticate, async (req, res) => {
-        const { name, price, details } = req.body;
+        const { name, details } = req.body;
         // Validate required fields
-        const requiredFields = ['name', 'price', 'details'];
+        const requiredFields = ['name', 'details'];
         const missingFields = requiredFields.filter(field => !req.body[field]);
 
         if (missingFields.length > 0) {
@@ -1218,7 +1218,7 @@ Router.route('/tiers')
 
         try {
             // Create the tiers
-            const props = { name, price, details }
+            const props = { name, details }
             const tier = await createTier(props);
 
             if (!tier) {
