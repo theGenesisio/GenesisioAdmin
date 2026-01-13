@@ -59,7 +59,7 @@ const LatestLiveTrade = () => {
     },
   ];
   return (
-    <Card className='dashboard-box flex flex-col h-full' variant='gradient' color='gray'>
+    <Card className='dashboard-box flex flex-col h-full' >
       <CardBody className='p-0'>
         <div className='flex items-center justify-between'>
           <div className='flex flex-col'>

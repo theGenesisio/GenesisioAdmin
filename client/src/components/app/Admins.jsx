@@ -85,9 +85,7 @@ const Admins = () => {
     <main className='grid md:grid-cols-5 grid-cols-1 gap-4 pb-2'>
       {/* Form to create new administrator */}
       <Card
-        className='profile-box flex flex-col space-y-4 col-span-1 md:col-span-2'
-        variant='gradient'
-        color='gray'>
+        className='profile-box flex flex-col space-y-4 col-span-1 md:col-span-2'>
         <h2 className='text-lg font-semibold mb-2'>Create new Administrator</h2>
         <form onSubmit={handleSubmit(handleAdmins)} className='flex flex-col space-y-4'>
           <div>
@@ -151,8 +149,7 @@ const Admins = () => {
       {/* Display current administrator info */}
       <Card
         className='profile-box flex flex-col space-y-4 col-span-1 md:col-span-3'
-        variant='gradient'
-        color='gray'>
+        >
         <h2 className='text-lg font-semibold text-text-light mb-2'>Current Administrator Info</h2>
         <div className='space-y-4'>
           <p>

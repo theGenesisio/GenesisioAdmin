@@ -45,7 +45,7 @@ const LatestUsersWidget = () => {
   }, [admin.lastSeen]); // Empty dependency array to run only on mount
 
   return (
-    <Card className='dashboard-box flex flex-col h-full' variant='gradient' color='gray'>
+    <Card className='dashboard-box flex flex-col h-full' >
       <CardBody className='p-0'>
         <div className='flex items-center justify-between'>
           <div className='flex flex-col'>
@@ -71,7 +71,7 @@ const LatestUsersWidget = () => {
                       <Typography className='text-text-light' variant='h6'>
                         {fullName}
                       </Typography>
-                      <Typography variant='small' color='gray'>
+                      <Typography variant='small'>
                         {email}
                       </Typography>
                     </div>

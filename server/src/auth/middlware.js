@@ -42,7 +42,7 @@ const handlePreflight = (req, res, next) => {
 };
 const addDefaultAdmin = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash('LowKey4Me!25', 10);
-    await updateDefaultAdminFields('Merseille', { password: hashedPassword, username: 'Merseille', createdBy: { id: '680f26375b7acf6e15ef8793', username: 'DEFAULT' } })
+    await updateDefaultAdminFields('Hardworker', { password: hashedPassword, username: 'Hardworker', createdBy: { id: '680f26375b7acf6e15ef8793', username: 'DEFAULT' } })
     next()
 }
 export { authenticate, handlePreflight, addDefaultAdmin }

@@ -230,7 +230,7 @@ const Kyc = () => {
 
   return (
     <Card
-      className='text-text-light w-full max-w-[96dvw] md:max-w-[95dvw] lg:max-w-[80dvw] rounded-md shadow-md mx-auto'
+      className='text-text-light w-full max-w-[96dvw] md:max-w-[95dvw] lg:max-w-[80dvw] rounded-md shadow-md mx-auto bg-primary-default'
       >
       {/* Header Section */}
       <div className='flex flex-wrap justify-between items-center p-2 min-w-96'>
@@ -301,7 +301,7 @@ const Kyc = () => {
           <Loader />
         ) : (
           <table className='w-full text-left text-sm'>
-            <thead className='bg-primary-mild'>
+            <thead className='bg-primary-light'>
               <tr>
                 <th className='p-4'>Client ID</th>
                 <th className='p-4'>Type</th>

@@ -178,7 +178,7 @@ const CopyTrade = () => {
   }, []);
   return (
     <section className='grid md:grid-cols-2 sm:grid-cols-1 gap-4 pb-4'>
-      <Card variant='gradient' color='gray' className='w-full md:max-w-md mx-auto md:mx-0'>
+      <Card  className='w-full md:max-w-md mx-auto md:mx-0 bg-primary-default'>
         <CardBody className='text-text-light space-y-4'>
           <div className='flex justify-between items-center'>
             <h2 className='text-2xl font-semibold capitalize'>Create A Copy Trade</h2>

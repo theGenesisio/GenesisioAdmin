@@ -141,7 +141,7 @@ export default function LatestDeposit() {
   };
 
   return (
-    <Card className='dashboard-box flex flex-col md:flex-row !p-0' variant='gradient' color='gray'>
+    <Card className='dashboard-box flex flex-col md:flex-row !p-0' >
       <CardHeader
         shadow={false}
         floated={false}

@@ -218,7 +218,7 @@ const AdminsTable = () => {
 
   return (
     <Card
-      className='profile-box flex flex-col space-y-4 col-span-1 md:col-span-5'
+      className='profile-box flex flex-col space-y-4 col-span-1 md:col-span-5 bg-primary-default'
       >
       {/* Header Section */}
       <div className='flex flex-wrap justify-between items-center p-2 min-w-96'>
@@ -289,7 +289,7 @@ const AdminsTable = () => {
           <Loader />
         ) : (
           <table className='w-full text-left text-sm'>
-            <thead className='bg-primary-mild'>
+            <thead className='bg-primary-light'>
               <tr>
                 <th className='p-4'>Admin ID</th>
                 <th className='p-4 min-w-[10rem]'>Username</th>

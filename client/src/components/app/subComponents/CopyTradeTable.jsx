@@ -126,7 +126,7 @@ const CopyTradeTable = () => {
 
   return (
     <Card
-      className='text-text-light rounded-md shadow-md md:col-span-5'
+      className='text-text-light rounded-md shadow-md md:col-span-5 bg-primary-default'
       >
       <div className='flex flex-wrap justify-between items-center p-2 min-w-96'>
         <div>
@@ -162,7 +162,7 @@ const CopyTradeTable = () => {
           <Loader />
         ) : (
           <table className='w-full text-left text-sm'>
-            <thead className='bg-primary-mild'>
+            <thead className='bg-primary-light'>
               <tr>
                 <th className='p-4 max-w-[16rem] text-nowrap'>Trader</th>
                 <th className='p-4'>Trade Type</th>

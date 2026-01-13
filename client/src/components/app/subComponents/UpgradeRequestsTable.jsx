@@ -199,7 +199,7 @@ const UpgradeRequestsTable = () => {
 
   return (
     <Card
-      className='text-text-light rounded-md shadow-md md:col-span-5'
+      className='text-text-light rounded-md shadow-md md:col-span-5 bg-primary-default'
       >
       <div className='p-4 flex flex-col md:flex-row justify-between'>
         <h2 className='text-lg font-semibold'>Upgrade Requests</h2>
@@ -274,7 +274,7 @@ const UpgradeRequestsTable = () => {
           <Loader />
         ) : (
           <table className='w-full text-left text-sm'>
-            <thead className='bg-primary-mild'>
+            <thead className='bg-primary-light'>
               <tr>
                 <th className='p-4'>User</th>
                 <th className='p-4'>Tier</th>

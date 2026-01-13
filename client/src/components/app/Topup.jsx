@@ -305,8 +305,7 @@ const Topup = () => {
     <main className='grid md:grid-cols-5 grid-cols-1 gap-4'>
       <Card
         className='profile-box flex flex-col space-y-4 col-span-1 md:col-span-2'
-        variant='gradient'
-        color='gray'>
+        >
         <div className='flex flex-row justify-between'>
           <h2 className='text-lg font-semibold mb-2'>Top up</h2>
           <button onClick={() => updateWallets()} className='primary-btn' disabled={walletLoading}>
@@ -420,8 +419,7 @@ const Topup = () => {
       </Card>
       <Card
         className='bg-primary-default text-text-light rounded-md shadow-md md:col-span-3'
-        variant='gradient'
-        color='gray'>
+        >
         <div className='p-4 flex flex-col md:flex-row justify-between'>
           <h2 className='text-lg font-semibold'>Top-up Records</h2>
           <div className='relative w-full max-w-sm md:ml-4 mt-2 md:mt-0'>
@@ -440,7 +438,7 @@ const Topup = () => {
             <Loader />
           ) : (
             <table className='w-full text-left text-sm'>
-              <thead className='bg-primary-mild'>
+              <thead className='bg-primary-light'>
                 <tr>
                   <th className='p-4'>Client</th>
                   <th className='p-4'>Amount</th>

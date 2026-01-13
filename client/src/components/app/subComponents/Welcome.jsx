@@ -7,7 +7,7 @@ const Welcome = () => {
   const { admin } = useAuth();
   const navigate = useNavigate();
   return (
-    <Card className='dashboard-box flex flex-row relative !p-0' variant='gradient' color='gray'>
+    <Card className='dashboard-box flex flex-row relative !p-0' >
       <div className='w-2/3 p-4'>
         <h1 className='font-semibold text-2xl flex flex-col justify-start'>
           <UserIcon className='h-5 w-5' />

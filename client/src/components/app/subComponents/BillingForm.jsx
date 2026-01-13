@@ -187,7 +187,7 @@ const BillingForm = ({ detail, setsuccess }) => {
 
   return (
     <Card
-      className='w-full max-w-[96dvh] md:max-w-[36rem] mx-auto md:mx-0'
+      className='w-full max-w-[96dvh] md:max-w-[36rem] mx-auto md:mx-0 bg-primary-default'
       >
       <CardBody className='text-text-light flex flex-col space-y-2'>
         <div className='flex justify-between'>

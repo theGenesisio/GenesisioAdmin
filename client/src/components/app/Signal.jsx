@@ -25,7 +25,16 @@ const Signal = () => {
         addNotification(response.message, "error");
       } else {
         const { users, message } = response;
-        users && setUsers(users.reverse());
+        if (users) {
+          const reversedUsers = users.reverse();
+          setUsers(reversedUsers);
+          if (reversedUsers.length === 1) {
+            setuserDetails({
+              userId: reversedUsers[0]._id,
+              fullName: reversedUsers[0].fullName,
+            });
+          }
+        }
         addNotification(message);
       }
     } catch (err) {
@@ -77,8 +86,7 @@ const Signal = () => {
     <main className='grid md:grid-cols-5 grid-cols-1 gap-4'>
       <Card
         className='profile-box flex flex-col space-y-4 col-span-1 md:col-span-2'
-        variant='gradient'
-        color='gray'>
+        >
         <h2 className='text-lg font-semibold mb-2'>Set Signal</h2>
         <form className='flex flex-col space-y-2' onSubmit={handleSubmit}>
           {loading ? (
@@ -90,7 +98,7 @@ const Signal = () => {
               </label>
               <select
                 className='form-input w-full'
-                value={JSON.stringify(userDetails)} // Ensure it's always a string
+                value={userDetails ? JSON.stringify(userDetails) : ""} // Ensure it's always a string
                 onChange={(e) => setuserDetails(JSON.parse(e.target.value))} // Convert back to object
                 id='client'
                 required>
