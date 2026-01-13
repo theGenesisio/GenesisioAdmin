@@ -200,8 +200,7 @@ const UpgradeRequestsTable = () => {
   return (
     <Card
       className='text-text-light rounded-md shadow-md md:col-span-5'
-      variant='gradient'
-      color='gray'>
+      >
       <div className='p-4 flex flex-col md:flex-row justify-between'>
         <h2 className='text-lg font-semibold'>Upgrade Requests</h2>
         <div className='relative w-full max-w-sm md:ml-4 mt-2 md:mt-0'>

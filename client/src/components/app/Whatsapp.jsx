@@ -125,8 +125,7 @@ const Whatsapp = () => {
   return (
     <Card
       className='profile-box flex flex-col space-y-2 md:max-w-[65dvw] lg:max-w-[30dvw] w-full'
-      variant='gradient'
-      color='gray'>
+      >
       <h2 className='text-lg font-semibold mb-2 flex justify-between'>
         Whatsapp Configuration
         <QuestionMarkCircleIcon

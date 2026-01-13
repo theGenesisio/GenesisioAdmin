@@ -5,30 +5,26 @@ module.exports = withMT({
   content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      // The Config Chunk
       colors: {
         primary: {
-          mild: '#616161',
-          light: '#a3a3a3',
-          default: '#424242',
-          dark: '#262626',
+          mild: '#ECFDF5',  // Very pale mint grey
+          light: '#A7F3D0', // Light teal-grey
+          default: '#115E59', // Deep teal-grey
+          dark: '#042F2E',   // Near black teal
         },
         text: {
-          dark: '#262626',
-          light: '#d8d8d8'
+          dark: '#042F2E',
+          light: '#F0FDFA'
         },
-        accent: '#FFD700', // Gold tone inspired by the sun
+        accent: '#0D9488', // Vibrant Teal (Tailwind Teal 600)
         warning: {
-          light: '#fff3cd', // A gentle, sunlit yellow
-          dark: '#e0a800', // A deeper gold-orange for emphasis
+          // Kept yellowish, but cooler
+          light: '#FEF9C3',
+          dark: '#A16207',
         },
-        success: {
-          light: '#c8e6c9',
-          dark: '#388e3c',
-        },
-        error: {
-          light: '#ffcdd2',
-          dark: '#d32f2f',
-        },
+        success: { light: '#c8e6c9', dark: '#388e3c' }, // Existing green works well
+        error: { light: '#ffcdd2', dark: '#d32f2f' },   // Existing red works well
       },
     },
   },

@@ -218,8 +218,7 @@ const User = () => {
   return (
     <Card
       className='text-text-light w-full max-w-[96dvw] md:max-w-[95dvw] lg:max-w-[80dvw] rounded-md shadow-md mx-auto'
-      variant='gradient'
-      color='gray'>
+      >
       {/* Header Section */}
       <div className='flex flex-wrap justify-between items-center p-2 min-w-96'>
         <div>

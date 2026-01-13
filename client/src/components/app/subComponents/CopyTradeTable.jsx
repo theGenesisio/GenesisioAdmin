@@ -127,8 +127,7 @@ const CopyTradeTable = () => {
   return (
     <Card
       className='text-text-light rounded-md shadow-md md:col-span-5'
-      variant='gradient'
-      color='gray'>
+      >
       <div className='flex flex-wrap justify-between items-center p-2 min-w-96'>
         <div>
           <h3 className='text-lg font-semibold'>Copy Trades</h3>

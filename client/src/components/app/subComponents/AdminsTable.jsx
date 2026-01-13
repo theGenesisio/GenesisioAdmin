@@ -219,8 +219,7 @@ const AdminsTable = () => {
   return (
     <Card
       className='profile-box flex flex-col space-y-4 col-span-1 md:col-span-5'
-      variant='gradient'
-      color='gray'>
+      >
       {/* Header Section */}
       <div className='flex flex-wrap justify-between items-center p-2 min-w-96'>
         <div>

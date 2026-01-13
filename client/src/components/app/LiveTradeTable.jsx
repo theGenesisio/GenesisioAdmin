@@ -177,8 +177,7 @@ const LiveTradeHistoryTable = () => {
   return (
     <Card
       className='bg-primary-default text-text-light w-full max-w-[96dvw] md:max-w-[95dvw] lg:max-w-[79dvw] rounded-md shadow-md mx-auto'
-      variant='gradient'
-      color='gray'>
+      >
       <div className='flex flex-wrap justify-between items-center p-2 min-w-96'>
         <div>
           <h3 className='text-lg font-semibold'>Live Trade History</h3>

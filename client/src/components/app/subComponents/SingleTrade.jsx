@@ -203,8 +203,7 @@ export default function SingleTrade() {
   return (
     <Card
       className='w-full max-w-[96dvh] md:max-w-[26rem] shadow-lg text-text-light'
-      variant='gradient'
-      color='gray'>
+      >
       <CardBody>
         <div className='mb-3 flex flex-row items-center justify-between'>
           <Typography variant='h2' className='font-medium text-text-light'>
