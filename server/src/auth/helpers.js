@@ -1,54 +1,48 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import JWT from 'jsonwebtoken'
+
+// Initialize Resend
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 // ** Helper for reauthenticating admin access token
 async function generateAccessToken(admin) {
-  return JWT.sign(admin, process.env.JWT_ACCESS_TOKEN_SECRET, { expiresIn: '72h' })
+  return JWT.sign(admin, process.env.JWT_ACCESS_TOKEN_SECRET, { expiresIn: '168h' })
 }
+
+// ** Helper for sending emails via Resend
 const mail = async ({ email, subject, message, header }) => {
-  const MAILER_USERNAME = process.env.MAILER_USERNAME;
-  const MAILER_PASSWORD = process.env.MAILER_PASSWORD;
-  const DKIM_PRIVATE_KEY = process.env.DKIM_PRIVATE_KEY;
-
-  const transporter = nodemailer.createTransport({
-    host: 'mail.privateemail.com',
-    port: 465,
-    secure: true,
-    auth: {
-      user: MAILER_USERNAME,
-      pass: MAILER_PASSWORD,
-    },
-    dkim: {
-      domainName: 'genesisio.net',
-      keySelector: 'default',
-      privateKey: DKIM_PRIVATE_KEY,
-    },
-  });
-
-  // Auto-detect if it's a bulk send
-  const isBulk = Array.isArray(email) && email.length > 1;
-
   try {
-    const toField = isBulk ? '' : (Array.isArray(email) ? email[0] : email);
+    // Auto-detect if it's a bulk send
+    const isBulk = Array.isArray(email) && email.length > 1;
+    const recipients = Array.isArray(email) ? email : [email];
 
-    const info = await transporter.sendMail({
-      from: {
-        name: "Genesisio",
-        address: MAILER_USERNAME,
-      },
-      to: toField, // Empty if bulk, direct if single
-      bcc: isBulk ? [...email, MAILER_USERNAME] : MAILER_USERNAME,
+    // Generate HTML content
+    const htmlContent = generateEmailHTML({ message, header });
+
+    // Send email using Resend
+    const { data, error } = await resend.emails.send({
+      from: 'Genesisio <notifications@genesisio.net>',
+      to: recipients,
       subject,
-      html: generateEmailHTML({ message, header }),
+      html: htmlContent,
     });
 
+    if (error) {
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+
+    // Return success response with Resend data
     return {
       success: true,
-      accepted: info.accepted,
-      rejected: info.rejected,
-      response: info.response,
-      messageId: info.messageId,
+      accepted: recipients,
+      rejected: [],
+      response: 'Email sent successfully via Resend',
+      messageId: data?.id || null,
     };
   } catch (error) {
     return {
@@ -132,7 +126,7 @@ export function generateEmailHTML(details) {
                   <p style="font-size: 15px; margin: 0 0 8px 0; color: #FFD700;">
                     Have a question?
                   </p>
-                  <a href="mailto:support@genesisio.net" 
+                  <a href="mailto:notifications@genesisio.net" 
                      style="color: #d8d8d8; text-decoration: none; font-size: 14px;">
                     Contact support
                   </a>
