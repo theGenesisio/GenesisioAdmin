@@ -16,12 +16,42 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const baseDir = process.env.NODE_ENV === 'production' ? path.join(process.cwd(), "/server") : __dirname;
 
-// Database connection
-mongoose.connect(process.env.MONGO_ATLAS_URI, {
-    serverSelectionTimeoutMS: 100000,
-})
-    .then(() => console.log('Connected to Genesisio db successfully'))
-    .catch(err => console.log(`ERROR In Connection to Genesisio db: \n ${err}`));
+// Database connection with DNS fallback and retry logic
+const connectToDatabase = async () => {
+    const connectionOptions = {
+        serverSelectionTimeoutMS: 100000,
+        connectTimeoutMS: 30000,
+        socketTimeoutMS: 45000,
+    };
+
+    try {
+        await mongoose.connect(process.env.MONGO_ATLAS_URI, connectionOptions);
+        console.log('Connected to Genesisio db successfully');
+    } catch (err) {
+        console.error(`Initial connection failed: ${err.message}`);
+
+        // If DNS error (ESERVFAIL, ENOTFOUND), retry after a short delay
+        if (err.code === 'ESERVFAIL' || err.code === 'ENOTFOUND' || err.syscall === 'queryTxt') {
+            console.log('DNS lookup failed, retrying in 2 seconds...');
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            try {
+                await mongoose.connect(process.env.MONGO_ATLAS_URI, {
+                    ...connectionOptions,
+                    family: 4, // Force IPv4 to avoid IPv6 DNS issues
+                });
+                console.log('Connected to Genesisio db successfully (retry)');
+            } catch (retryErr) {
+                console.error(`ERROR In Connection to Genesisio db: \n ${retryErr}`);
+            }
+        } else {
+            console.error(`ERROR In Connection to Genesisio db: \n ${err}`);
+        }
+    }
+};
+
+// Start database connection
+connectToDatabase();
 
 // CORS Configuration
 const allowedOrigins = {
