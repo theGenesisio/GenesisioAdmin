@@ -81,11 +81,13 @@ import './src/cronjobs/LivepricesJob.js';
 import authRouter from './src/auth/JWT.js';
 import indexRouter from './src/routes/indexRouter.js';
 import imageRouter from './src/routes/imageRouter.js';
+import debugRouter from './src/debug-endpoint.js';
 
 // API routes
 app.use('/api/admin', indexRouter);
 app.use('/api/admin/img', imageRouter);
 app.use('/api/admin/auth', authRouter);
+app.use('/api/admin', debugRouter); // Debug endpoint
 
 // Root endpoint
 app.get('/', (req, res) => res.json({ message: ':)' }));
