@@ -289,7 +289,7 @@ const AdminsTable = () => {
           <Loader />
         ) : (
           <table className='w-full text-left text-sm'>
-            <thead className='bg-primary-light'>
+            <thead className='bg-primary-dark'>
               <tr>
                 <th className='p-4'>Admin ID</th>
                 <th className='p-4 min-w-[10rem]'>Username</th>

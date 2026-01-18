@@ -107,7 +107,7 @@ function SidebarContent() {
         </Typography>
       </Link>
       <List className='text-text-light'>
-        <ListItem>
+        <ListItem className="hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark">
           <ListItemPrefix>
             <span className='h-5 w-5 scale-125'>{clockIcon}</span>
           </ListItemPrefix>
@@ -123,7 +123,7 @@ function SidebarContent() {
               }`}
             />
           }>
-          <ListItem className='p-0' selected={open === 1}>
+          <ListItem className='p-0 hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark' selected={open === 1}>
             <AccordionHeader
               onClick={() => handleOpen(1)}
               className='border-b-0 p-3 text-text-light'>
@@ -135,19 +135,19 @@ function SidebarContent() {
           </ListItem>
           <AccordionBody className='py-1'>
             <List className='p-0 text-text-light'>
-              <ListItem onClick={() => navigate("./dashboard")}>
+              <ListItem className="hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark" onClick={() => navigate("./dashboard")}>
                 <ListItemPrefix>
                   <HomeIcon strokeWidth={3} className='h-5 w-5' />
                 </ListItemPrefix>
                 Home
               </ListItem>
-              <ListItem onClick={() => navigate("./admins")}>
+              <ListItem className="hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark" onClick={() => navigate("./admins")}>
                 <ListItemPrefix>
                   <UserGroupIcon className='h-5 w-5' />
                 </ListItemPrefix>
                 Admins
               </ListItem>
-              <ListItem onClick={() => navigate("./traders")}>
+              <ListItem className="hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark" onClick={() => navigate("./traders")}>
                 <ListItemPrefix>
                   <span className='h-5 w-5 scale-125'>{traderIcon}</span>
                 </ListItemPrefix>
@@ -166,7 +166,7 @@ function SidebarContent() {
               }`}
             />
           }>
-          <ListItem className='p-0' selected={open === 2}>
+          <ListItem className='p-0 hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark' selected={open === 2}>
             <AccordionHeader
               onClick={() => handleOpen(2)}
               className='border-b-0 p-3 text-text-light'>
@@ -178,19 +178,19 @@ function SidebarContent() {
           </ListItem>
           <AccordionBody className='py-1'>
             <List className='p-0 text-text-light'>
-              <ListItem onClick={() => navigate("./deposits")}>
+              <ListItem className="hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark" onClick={() => navigate("./deposits")}>
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className='h-3 w-5' />
                 </ListItemPrefix>
                 Deposits
               </ListItem>
-              <ListItem onClick={() => navigate("./withdrawals")}>
+              <ListItem className="hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark" onClick={() => navigate("./withdrawals")}>
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className='h-3 w-5' />
                 </ListItemPrefix>
                 Withdrawals
               </ListItem>
-              <ListItem onClick={() => navigate("./trade")}>
+              <ListItem className="hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark" onClick={() => navigate("./trade")}>
                 <ListItemPrefix>
                   <span className='h-3 w-5 scale-125'>{liveTradeIcon}</span>
                 </ListItemPrefix>
@@ -209,7 +209,7 @@ function SidebarContent() {
               }`}
             />
           }>
-          <ListItem className='p-0' selected={open === 3}>
+          <ListItem className='p-0 hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark' selected={open === 3}>
             <AccordionHeader
               onClick={() => handleOpen(3)}
               className='border-b-0 p-3 text-text-light'>
@@ -221,25 +221,25 @@ function SidebarContent() {
           </ListItem>
           <AccordionBody className='py-1'>
             <List className='p-0 text-text-light'>
-              <ListItem onClick={() => navigate("./users")}>
+              <ListItem className="hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark" onClick={() => navigate("./users")}>
                 <ListItemPrefix>
                   <UsersIcon strokeWidth={3} className='h-3 w-5' />
                 </ListItemPrefix>
                 Users
               </ListItem>
-              <ListItem onClick={() => navigate("./kyc")}>
+              <ListItem className="hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark" onClick={() => navigate("./kyc")}>
                 <ListItemPrefix>
                   <IdentificationIcon className='h-3 w-5' />
                 </ListItemPrefix>
                 KYC
               </ListItem>
-              <ListItem onClick={() => navigate("./top-up")}>
+              <ListItem className="hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark" onClick={() => navigate("./top-up")}>
                 <ListItemPrefix>
                   <BanknotesIcon className='h-3 w-5' />
                 </ListItemPrefix>
                 Top up
               </ListItem>
-              <ListItem onClick={() => navigate("./signals")}>
+              <ListItem className="hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark" onClick={() => navigate("./signals")}>
                 <ListItemPrefix>
                   <WifiIcon className='h-3 w-5' />
                 </ListItemPrefix>
@@ -249,49 +249,49 @@ function SidebarContent() {
           </AccordionBody>
         </Accordion>
         <hr className='my-2 border-primary-light' />
-        <ListItem onClick={() => navigate("./tiers")}>
+        <ListItem className="hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark" onClick={() => navigate("./tiers")}>
           <ListItemPrefix>
             <TrophyIcon className='h-5 w-5' />
           </ListItemPrefix>
           Tiers
         </ListItem>
-        <ListItem onClick={() => navigate("./billing")}>
+        <ListItem className="hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark" onClick={() => navigate("./billing")}>
           <ListItemPrefix>
             <span className='h-5 w-5 scale-125'>{addCardIcon}</span>
           </ListItemPrefix>
           Billing
         </ListItem>
-        <ListItem onClick={() => navigate("./plans")}>
+        <ListItem className="hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark" onClick={() => navigate("./plans")}>
           <ListItemPrefix>
             <span className='h-5 w-5 scale-125'>{plansIcon}</span>
           </ListItemPrefix>
           Investment
         </ListItem>
-        <ListItem onClick={() => navigate("./copy-trade")}>
+        <ListItem className="hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark" onClick={() => navigate("./copy-trade")}>
           <ListItemPrefix>
             <DocumentCurrencyDollarIcon className='h-4 w-4 scale-125' />
           </ListItemPrefix>
           Copy Trading
         </ListItem>
-        <ListItem onClick={() => navigate("./mailing")}>
+        <ListItem className="hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark" onClick={() => navigate("./mailing")}>
           <ListItemPrefix>
             <EnvelopeIcon className='h-5 w-5' />
           </ListItemPrefix>
           Mailing
         </ListItem>
-        <ListItem onClick={() => navigate("./send-notification")}>
+        <ListItem className="hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark" onClick={() => navigate("./send-notification")}>
           <ListItemPrefix>
             <BellAlertIcon className='h-5 w-5' />
           </ListItemPrefix>
           Send Notification
         </ListItem>
-        <ListItem onClick={() => navigate("./whatsapp")}>
+        <ListItem className="hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark" onClick={() => navigate("./whatsapp")}>
           <ListItemPrefix>
             <span className='h-5 w-5 scale-125'>{whatsappIcon}</span>
           </ListItemPrefix>
           Whatsapp
         </ListItem>
-        <ListItem onClick={() => logout()}>
+        <ListItem className="hover:bg-primary-mild hover:text-primary-dark focus:bg-primary-mild focus:text-primary-dark" onClick={() => logout()}>
           <ListItemPrefix>
             <PowerIcon className='h-5 w-5' />
           </ListItemPrefix>

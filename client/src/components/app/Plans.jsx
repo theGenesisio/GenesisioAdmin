@@ -314,7 +314,7 @@ const Plans = () => {
             <Loader />
           ) : (
             <table className='w-full text-left text-sm'>
-              <thead className='bg-primary-light'>
+              <thead className='bg-primary-dark'>
                 <tr>
                   <th className='p-4'>Name</th>
                   <th className='p-4 text-nowrap'>Min ($)</th>

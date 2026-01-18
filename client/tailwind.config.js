@@ -8,23 +8,22 @@ module.exports = withMT({
       // The Config Chunk
       colors: {
         primary: {
-          mild: '#ECFDF5',  // Very pale mint grey
-          light: '#A7F3D0', // Light teal-grey
-          default: '#115E59', // Deep teal-grey
-          dark: '#042F2E',   // Near black teal
+          mild: '#fffbeb',  // Amber 50 - Warm white
+          light: '#fde68a', // Amber 200 - Muted gold
+          default: '#2c241b', // Dark Brownish Grey - Sunset night
+          dark: '#15100d',   // Deepest warm black
         },
         text: {
-          dark: '#042F2E',
-          light: '#F0FDFA'
+          dark: '#1c1917', // Stone 900
+          light: '#fffbf0' // Warm White
         },
-        accent: '#0D9488', // Vibrant Teal (Tailwind Teal 600)
+        accent: '#f59e0b', // Amber 500 - Sunset Gold
         warning: {
-          // Kept yellowish, but cooler
           light: '#FEF9C3',
           dark: '#A16207',
         },
-        success: { light: '#c8e6c9', dark: '#388e3c' }, // Existing green works well
-        error: { light: '#ffcdd2', dark: '#d32f2f' },   // Existing red works well
+        success: { light: '#c8e6c9', dark: '#388e3c' },
+        error: { light: '#ffcdd2', dark: '#d32f2f' },
       },
     },
   },

@@ -438,7 +438,7 @@ const Topup = () => {
             <Loader />
           ) : (
             <table className='w-full text-left text-sm'>
-              <thead className='bg-primary-light'>
+              <thead className='bg-primary-dark'>
                 <tr>
                   <th className='p-4'>Client</th>
                   <th className='p-4'>Amount</th>
