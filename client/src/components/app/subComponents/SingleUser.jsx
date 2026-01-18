@@ -55,10 +55,11 @@ const SingleUser = () => {
 
   return (
     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-4'>
-      <Card className='w-full shadow-lg text-text-light ' >
-        <CardHeader floated={false} color='blue-gray' className='m-0'>
+      <Card className='w-full shadow-lg text-text-light bg-primary-dark'>
+        <CardHeader floated={false} className='m-0'>
           <ProfilePic imageId={parsedUser?.imageFilename} ref={imageRef} />
-          <div className='absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent to-black/60' />
+          <div className='absolute inset-0 h-full w-full bg-gradient-to-tl from-transparent to-primary-dark' />
+          {/* <div className='absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent to-black/60' /> */}
           <IconButton
             variant='text'
             className='!absolute top-4 right-4 rounded-full'
@@ -73,7 +74,7 @@ const SingleUser = () => {
           </IconButton>
         </CardHeader>
       </Card>
-      <Card className='w-full shadow-lg text-text-light' >
+      <Card className='w-full shadow-lg text-text-light bg-primary-dark' >
         <CardBody>
           <Typography className='text-sm text-primary-light'>User Details</Typography>
           <div className='my-2 flex flex-col space-y-2'>
@@ -108,7 +109,7 @@ const SingleUser = () => {
           </div>
         </CardBody>
       </Card>
-      <Card className='w-full shadow-lg text-text-light' >
+      <Card className='w-full shadow-lg text-text-light bg-primary-dark'>
         <CardBody>
           <Typography className='text-sm text-primary-light'>Wallet</Typography>
           <div className='my-2 flex flex-col space-y-2'>
@@ -140,7 +141,7 @@ const SingleUser = () => {
         </CardBody>
       </Card>
 
-      <Card className='w-full shadow-lg text-text-light' >
+      <Card className='w-full shadow-lg text-text-light bg-primary-dark'>
         <CardBody>
           <Typography className='text-sm text-primary-light'>Metrics and Monitoring</Typography>
           <div className='my-2 flex flex-col space-y-2'>
@@ -167,7 +168,7 @@ const SingleUser = () => {
           </div>
         </CardBody>
       </Card>
-      <Card className='w-full shadow-lg text-text-light' >
+      <Card className='w-full shadow-lg text-text-light bg-primary-dark'>
         <CardBody>
           <Typography className='text-sm text-primary-light'>Management and Others</Typography>
           <div className='my-2 flex flex-col space-y-2'>
