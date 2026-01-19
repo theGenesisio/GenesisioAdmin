@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import { Resend } from 'resend';
 import JWT from 'jsonwebtoken'
+import crypto from 'crypto';
 
 // Initialize Resend
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -21,15 +22,27 @@ const mail = async ({ email, subject, message, header }) => {
     // Generate HTML content
     const htmlContent = generateEmailHTML({ message, header });
 
+    // Generate Plain Text content
+    const { convert } = await import('html-to-text');
+    const textContent = convert(htmlContent, {
+      wordwrap: 130
+    });
+
     // Send email using Resend
     const { data, error } = await resend.emails.send({
       from: 'Genesisio <notifications@genesisio.net>',
       to: recipients,
+      replyTo: 'notifications@genesisio.net', // Best practice for deliverability
       subject,
       html: htmlContent,
+      text: textContent, // Crucial for spam filters
+      headers: {
+        'X-Entity-Ref-ID': crypto.randomUUID(), // Helps with tracking
+      }
     });
 
     if (error) {
+      console.error('Resend Error:', error);
       return {
         success: false,
         error: error.message,
@@ -45,6 +58,7 @@ const mail = async ({ email, subject, message, header }) => {
       messageId: data?.id || null,
     };
   } catch (error) {
+    console.error('Mail Helper Error:', error);
     return {
       success: false,
       error: error.message,
