@@ -90,7 +90,7 @@ const Mailing = () => {
             message: message,
             subject: subject,
             header: header,
-            targets: targets.split(",").map((email) => email.trim()),
+            targets: targets.split(",").map((email) => email.trim()).filter(email => email), // Filter empty strings
           }),
           credentials: "include",
         },
@@ -102,7 +102,7 @@ const Mailing = () => {
           response;
 
         addNotification(message, "success");
-        setMessage("");
+        setMessage([""]); // Reset to array with empty string to clear inputs properly
         setSubject("");
         setHeader("");
         setTargets("");
@@ -190,7 +190,7 @@ const Mailing = () => {
 
   const filteredMailLogs = useMemo(() => {
     return mailLogs.filter((mailLog) => {
-      return !searchQuery || mailLog.subject.includes(searchQuery);
+      return !searchQuery || mailLog.subject.toLowerCase().includes(searchQuery.toLowerCase());
     });
   }, [mailLogs, searchQuery]);
 
@@ -207,6 +207,35 @@ const Mailing = () => {
   useEffect(() => {
     setTotalItems(filteredMailLogs.length); // Track total items
   }, [filteredMailLogs]);
+
+  // Helper component to render array cells cleanly
+  const RenderArrayCell = ({ data, type = 'string' }) => {
+    if (!data || data.length === 0) return 0;
+    
+    // If it's a large list, just show count
+    if (data.length >= 6) return data.length;
+
+    // Handle different data types for small lists
+    if (type === 'failedEmail') {
+      // failedEmails is an array of objects: { email, error }
+      return (
+        <div className="flex flex-col gap-1">
+          {data.map((item, idx) => (
+            <span key={idx} className="block text-xs" title={item.error}>
+              {item.email}
+            </span>
+          ))}
+        </div>
+      );
+    }
+
+    if (Array.isArray(data)) {
+      return data.join(", ");
+    }
+    
+    return data;
+  };
+
   return (
     <main className='grid md:grid-cols-6 grid-cols-1 gap-4'>
       <Card
@@ -342,7 +371,7 @@ const Mailing = () => {
                   <tr key={mailLog._id} className='border-b hover:bg-primary-dark'>
                     <td className='p-4 min-w-[16rem]'>{mailLog.subject}</td>
                     <td className='p-4 capitalize'>{mailLog.header}</td>
-                    <td className='p-4 min-w-[16rem]'>{mailLog.message[0] || mailLog.message}</td>
+                    <td className='p-4 min-w-[16rem]'>{Array.isArray(mailLog.message) ? mailLog.message[0] : mailLog.message}</td>
                     <td className='p-4'>
                       {mailLog.success ? (
                         <CheckCircleIcon
@@ -357,68 +386,32 @@ const Mailing = () => {
                       )}
                     </td>
                     <td className='p-4 min-w-[16rem]'>
-                      {mailLog.successfulEmails.length === 0
-                        ? 0
-                        : mailLog.successfulEmails.length < 6
-                        ? Array.isArray(mailLog.successfulEmails)
-                          ? mailLog.successfulEmails.join(", ")
-                          : mailLog.successfulEmails
-                        : mailLog.successfulEmails.length}
+                      <RenderArrayCell data={mailLog.successfulEmails} />
                     </td>
                     <td className='p-4'>{mailLog.allUsers ? "TRUE" : "FALSE"}</td>
                     <td className='p-4 min-w-[16rem]'>
-                      {mailLog.originalTargets.length === 0
-                        ? 0
-                        : mailLog.originalTargets.length < 6
-                        ? Array.isArray(mailLog.originalTargets)
-                          ? mailLog.originalTargets.join(", ")
-                          : mailLog.originalTargets
-                        : mailLog.originalTargets.length}
+                      <RenderArrayCell data={mailLog.originalTargets} />
                     </td>
 
                     <td className='p-4 min-w-[16rem]'>
-                      {mailLog.validTargets.length === 0
-                        ? 0
-                        : mailLog.validTargets.length < 6
-                        ? Array.isArray(mailLog.validTargets)
-                          ? mailLog.validTargets.join(", ")
-                          : mailLog.validTargets
-                        : mailLog.validTargets.length}
+                      <RenderArrayCell data={mailLog.validTargets} />
                     </td>
 
                     <td className='p-4 min-w-[16rem]'>
-                      {mailLog.matchedTargets.length === 0
-                        ? 0
-                        : mailLog.matchedTargets.length < 6
-                        ? Array.isArray(mailLog.matchedTargets)
-                          ? mailLog.matchedTargets.join(", ")
-                          : mailLog.matchedTargets
-                        : mailLog.matchedTargets.length}
+                      <RenderArrayCell data={mailLog.matchedTargets} />
                     </td>
 
                     <td className='p-4 min-w-[16rem]'>
-                      {mailLog.invalidTargets.length === 0
-                        ? 0
-                        : mailLog.invalidTargets.length < 6
-                        ? Array.isArray(mailLog.invalidTargets)
-                          ? mailLog.invalidTargets.join(", ")
-                          : mailLog.invalidTargets
-                        : mailLog.invalidTargets.length}
+                      <RenderArrayCell data={mailLog.invalidTargets} />
                     </td>
 
                     <td className='p-4 min-w-[16rem]'>
-                      {mailLog.failedEmails.length === 0
-                        ? 0
-                        : mailLog.failedEmails.length < 6
-                        ? Array.isArray(mailLog.failedEmails)
-                          ? mailLog.failedEmails.join(", ")
-                          : mailLog.failedEmails
-                        : mailLog.failedEmails.length}
+                      <RenderArrayCell data={mailLog.failedEmails} type="failedEmail" />
                     </td>
                     <td className='p-4 min-w-[16rem]'>{formatToNewYorkTime(mailLog.createdAt)}</td>
                     <td className='p-4'>
                       <TrashIcon
-                        title='Clear filters'
+                        title='Delete log'
                         className='h-5 w-5 hover:scale-110 transition-all cursor-pointer text-error-dark  mx-auto'
                         onClick={() => deleteMailLog(mailLog._id)}
                       />

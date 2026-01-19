@@ -3,6 +3,7 @@ dotenv.config();
 import { Resend } from 'resend';
 import JWT from 'jsonwebtoken'
 import crypto from 'crypto';
+import { convert } from 'html-to-text';
 
 // Initialize Resend
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -23,7 +24,6 @@ const mail = async ({ email, subject, message, header }) => {
     const htmlContent = generateEmailHTML({ message, header });
 
     // Generate Plain Text content
-    const { convert } = await import('html-to-text');
     const textContent = convert(htmlContent, {
       wordwrap: 130
     });
@@ -69,7 +69,10 @@ const mail = async ({ email, subject, message, header }) => {
 
 export function generateEmailHTML(details) {
   const { message, header } = details;
-  const messageHTML = message
+  // Ensure message is an array
+  const messages = Array.isArray(message) ? message : [message];
+
+  const messageHTML = messages
     .map(item => `<p style="margin: 0 0 25px 0; white-space: pre-wrap;">${item}</p>`)
     .join('');
   return `<!DOCTYPE html>
