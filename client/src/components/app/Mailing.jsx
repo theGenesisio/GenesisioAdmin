@@ -98,7 +98,7 @@ const Mailing = () => {
       );
 
       if (response.success) {
-        const { message, invalidTargets, matchedTargets, successfulEmails, failedEmails } =
+        const { message, invalidTargets, matchedTargets, successfulEmails = [], failedEmails = [] } =
           response;
 
         addNotification(message, "success");
@@ -106,15 +106,15 @@ const Mailing = () => {
         setSubject("");
         setHeader("");
         setTargets("");
-        setInvalidTargetsCount(parseFloat(invalidTargets));
-        setMatchedTargetsCount(matchedTargets);
+        setInvalidTargetsCount(parseFloat(invalidTargets || 0));
+        setMatchedTargetsCount(matchedTargets || 0);
         setSuccessfulEmails(successfulEmails);
         setFailedEmails(failedEmails);
       } else if (!response.success) {
-        const { invalidTargets, matchedTargets, successfulEmails, failedEmails } = response;
+        const { invalidTargets, matchedTargets, successfulEmails = [], failedEmails = [] } = response;
         addNotification("Mailing operation complete without errors but not successful");
-        setInvalidTargetsCount(parseFloat(invalidTargets));
-        setMatchedTargetsCount(matchedTargets);
+        setInvalidTargetsCount(parseFloat(invalidTargets || 0));
+        setMatchedTargetsCount(matchedTargets || 0);
         setSuccessfulEmails(successfulEmails);
         setFailedEmails(failedEmails);
       } else {
@@ -210,10 +210,14 @@ const Mailing = () => {
 
   // Helper component to render array cells cleanly
   const RenderArrayCell = ({ data, type = 'string' }) => {
-    if (!data || data.length === 0) return 0;
+    // Safety check: if data is undefined, null, or not an array, return 0 for count-types or empty for list-types
+    if (!data) return 0;
+    if (!Array.isArray(data) && type !== 'string') return 0; // Check array if expecting array
     
     // If it's a large list, just show count
-    if (data.length >= 6) return data.length;
+    const length = data.length || 0;
+    if (length === 0) return 0;
+    if (length >= 6) return length;
 
     // Handle different data types for small lists
     if (type === 'failedEmail') {
