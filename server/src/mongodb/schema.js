@@ -419,6 +419,12 @@ const plansSchema = new Schema({
         required: [true, 'Duration is required'],
         min: [0, 'Duration must be a positive number'],
     },
+    details: {
+        type: String,
+        required: [true, 'Plan details are required'],
+        trim: true,
+        maxlength: [200, 'Details cannot exceed 200 characters']
+    }
 }, { timestamps: true });
 const tierSchema = new Schema({
     name: {
@@ -475,6 +481,9 @@ const investmentSchema = new Schema({
         duration: {
             type: Number,
             required: true,
+        },
+        details: {
+            type: String,
         },
     },
     user: {

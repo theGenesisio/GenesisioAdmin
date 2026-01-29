@@ -60,6 +60,7 @@ const Plans = () => {
   const [min, setMin] = useState("");
   const [ROIPercentage, setROIPercentage] = useState("");
   const [duration, setDuration] = useState("");
+  const [details, setDetails] = useState("");
   const [loading, setLoading] = useState(false);
 
   const [plans, setPlans] = useState([]);
@@ -103,6 +104,7 @@ const Plans = () => {
             min,
             ROIPercentage,
             duration,
+            details,
           }),
           credentials: "include",
         },
@@ -119,6 +121,7 @@ const Plans = () => {
           setMin("");
           setROIPercentage("");
           setDuration("");
+          setDetails("");
           fetchPlans(); // Refresh plans
         } else {
           addNotification("Plan creation was not successful", "error");
@@ -288,6 +291,19 @@ const Plans = () => {
               required
             />
           </div>
+          <div>
+            <label className='block text-sm font-semibold text-text-light mb-1' htmlFor='details'>
+              Details (max 200 chars)
+            </label>
+            <textarea
+              className='form-input w-full min-h-[80px]'
+              value={details}
+              onChange={(e) => setDetails(e.target.value)}
+              id='details'
+              maxLength={200}
+              required
+            />
+          </div>
           <button type='submit' className='accent-btn w-full' disabled={loading}>
             {loading ? "Creating..." : "Create Plan"}
           </button>
@@ -321,6 +337,7 @@ const Plans = () => {
                   <th className='p-4 text-nowrap'>Max ($)</th>
                   <th className='p-4 text-nowrap'>ROI Percentage (%)</th>
                   <th className='p-4'>Duration</th>
+                  <th className='p-4'>Details</th>
                   <th className='p-4'>Created</th>
                   <th className='p-4'>Delete</th>
                 </tr>
@@ -333,6 +350,9 @@ const Plans = () => {
                     <td className='p-4'>{parseFloat(plan.limits.max).toLocaleString()}</td>
                     <td className='p-4'>{plan.ROIPercentage}</td>
                     <td className='p-4'>{plan.duration}</td>
+                    <td className='p-4 max-w-[150px] truncate' title={plan.details}>
+                      {plan.details}
+                    </td>
                     <td className='p-4 min-w-[16rem]'>{formatToNewYorkTime(plan.createdAt)}</td>
                     <td className='py-4'>
                       <TrashIcon

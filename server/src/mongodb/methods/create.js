@@ -113,8 +113,8 @@ const createNotification = async (details = {}) => {
  * @returns {Object|boolean} - The created plan, or false if an error occurred.
  */
 const createPlan = async (details = {}) => {
-    const { name, max, min, ROIPercentage, duration } = details;
-    const requiredFields = ['name', 'max', 'min', 'ROIPercentage', 'duration'];
+    const { name, max, min, ROIPercentage, duration, details: planDetails } = details;
+    const requiredFields = ['name', 'max', 'min', 'ROIPercentage', 'duration', 'details'];
     const missingFields = requiredFields.filter(field => !details[field]);
 
     if (missingFields.length > 0) {
@@ -123,7 +123,7 @@ const createPlan = async (details = {}) => {
     }
 
     const plan = new Plan({
-        name, limits: { max, min }, ROIPercentage, duration
+        name, limits: { max, min }, ROIPercentage, duration, details: planDetails
     });
 
     try {

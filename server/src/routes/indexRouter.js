@@ -496,9 +496,9 @@ Router.route('/plans')
         }
     })
     .post(authenticate, async (req, res) => {
-        const { name, max, min, ROIPercentage, duration } = req.body;
+        const { name, max, min, ROIPercentage, duration, details: planDetails } = req.body;
         // Validate required fields
-        const requiredFields = ['name', 'max', 'min', 'ROIPercentage', 'duration'];
+        const requiredFields = ['name', 'max', 'min', 'ROIPercentage', 'duration', 'details'];
         const missingFields = requiredFields.filter(field => !req.body[field]);
 
         if (missingFields.length > 0) {
@@ -509,7 +509,7 @@ Router.route('/plans')
 
         try {
             // Create the plan
-            const details = { name, max, min, ROIPercentage, duration };
+            const details = { name, max, min, ROIPercentage, duration, details: planDetails };
             const plan = await createPlan(details);
 
             if (!plan) {
