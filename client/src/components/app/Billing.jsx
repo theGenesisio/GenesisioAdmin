@@ -51,6 +51,9 @@ import {
   ethIcon,
   ltcIcon,
   paypalIcon,
+  usdtIcon,
+  xrpIcon,
+  solanaIcon,
 } from "../../assets/icons";
 import BillingForm from "./subComponents/BillingForm";
 
@@ -108,9 +111,15 @@ const Billing = () => {
       dogecoin: dogecoinIcon,
       cashapp: cashasppIcon,
       paypal: paypalIcon,
+      usdt: usdtIcon,
+      xrp: xrpIcon,
+      solana: solanaIcon,
     };
 
-    return iconMap[name.toLowerCase()] || <BuildingLibraryIcon className='w-5 h-5' />;
+    const lowerName = name.toLowerCase();
+    const matchedKey = Object.keys(iconMap).find((key) => lowerName.includes(key));
+
+    return matchedKey ? iconMap[matchedKey] : <BuildingLibraryIcon className='w-5 h-5' />;
   };
 
   return (
